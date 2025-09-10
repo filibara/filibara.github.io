@@ -73,3 +73,24 @@ footer {
   padding: 15px;
   margin-top: 40px;
 }
+/* Tryb kontrastowy */
+body.contrast {
+  background-color: #000 !important;
+  color: #ff0 !important;
+}
+
+body.contrast header,
+body.contrast footer {
+  background-color: #000 !important;
+  color: #ff0 !important;
+}
+
+body.contrast .tile {
+  background-color: #000 !important;
+  color: #ff0 !important;
+  border: 2px solid #ff0;
+}
+
+body.contrast nav a {
+  color: #ff0 !important;
+}
