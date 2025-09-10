@@ -15,9 +15,11 @@
         <li><a href="#">PHP</a></li>
         <li><a href="#">JS</a></li>
         <li><a href="#">Bazy Danych</a></li>
-         <li><a href="#">Inne</a></li>
+        <li><a href="#">Inne</a></li>
       </ul>
     </nav>
+    <!-- 🔘 przycisk do zmiany trybu -->
+    <button id="contrast-toggle">Tryb kontrastowy</button>
   </header>
 
   <main>
@@ -35,12 +37,19 @@
         <h3>Arkusze egzaminacyjne</h3>
         <p>Tutaj znajdują się wybrane arkusze egzaminacyjne</p>
       </a>
-      <!-- Możesz dodawać więcej kafelków tutaj -->
     </section>
   </main>
 
   <footer>
     <p>&copy; 2025 filibara.github.io</p>
   </footer>
+
+  <script>
+    // JS do przełączania trybu
+    const toggleBtn = document.getElementById("contrast-toggle");
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("contrast");
+    });
+  </script>
 </body>
 </html>
