@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>alert()</title>
+  <meta charset="utf-8" />
+  <title>Przykład: alert()</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 24px; }
+    button { padding: 8px 12px; font-size: 16px; cursor: pointer; }
+  </style>
 </head>
 <body>
+  <h2>Przykład użycia window.alert()</h2>
+  <p>Kliknij przycisk, żeby pokazać alert.</p>
+  <button id="show-alert">Pokaż alert</button>
+
   <script>
-    window.alert("Komunikat w okienku alertu");
+    document.getElementById('show-alert').addEventListener('click', function () {
+      window.alert('Komunikat w okienku alertu — uruchomiony po kliknięciu.');
+    });
   </script>
 </body>
 </html>
