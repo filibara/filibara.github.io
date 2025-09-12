@@ -1,10 +1,35 @@
-<!DOCTYPE HTML>
-<HTML lang="pl">
-  <HEAD>
-    <meta charset="utf-8">
-    <tittle>Prompt</tittle>
-  </HEAD>
-  <BODY>
-    PROMPT
-  </BODY>
-</HTML>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <title>Przykład: prompt()</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 24px; }
+    button { padding: 8px 12px; font-size: 16px; cursor: pointer; }
+    #result { margin-top: 16px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h2>Przykład użycia prompt()</h2>
+  <p>Kliknij przycisk, podaj tekst w okienku prompt, a wynik pojawi się na stronie.</p>
+  <button id="ask-btn">Wprowadź dane</button>
+
+  <div id="result" aria-live="polite"></div>
+
+  <script>
+    document.getElementById('ask-btn').addEventListener('click', function () {
+      const answer = window.prompt('Podaj swoje imię (lub anuluj):', '');
+      const result = document.getElementById('result');
+
+      if (answer === null) {
+        result.textContent = 'Użytkownik anulował prompt.';
+      } else if (answer.trim() === '') {
+        result.textContent = 'Nie podano imienia.';
+      } else {
+        result.textContent = `Witaj, ${answer.trim()}! Miłego dnia `;
+      }
+    });
+  </script>
+</body>
+</html>
+
