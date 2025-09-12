@@ -1,10 +1,45 @@
-<!DOCTYPE HTML>
-<HTML lang="pl">
-  <HEAD>
-    <meta charset="utf-8">
-    <tittle>Confirm</tittle>
-  </HEAD>
-  <BODY>
-    CONFIRM
-  </BODY>
-</HTML>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <title>Przykład: confirm()</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 24px; }
+    button { padding: 8px 12px; font-size: 16px; cursor: pointer; margin-bottom: 12px; }
+    #answers { margin-top: 16px; padding: 12px; border: 1px dashed #ccc; display: none; }
+  </style>
+</head>
+<body>
+  <h2>Przykład użycia confirm()</h2>
+  <p>Kliknij przycisk — zapyta Cię, czy chcesz załadować treść z odpowiedziami.</p>
+  <button id="load-btn">Załaduj treść z odpowiedziami</button>
+
+  <div id="answers" aria-live="polite">
+    <!-- tutaj wstawimy treść po potwierdzeniu -->
+  </div>
+
+  <script>
+    document.getElementById('load-btn').addEventListener('click', function () {
+      const ok = window.confirm('Czy chcesz załadować treść strony z odpowiedziami?');
+      const box = document.getElementById('answers');
+
+      if (ok) {
+        // przykładowa zawartość, możesz tu wstawić dowolny HTML
+        box.innerHTML = `
+          <h3>Odpowiedzi i materiały</h3>
+          <ul>
+            <li>Odpowiedź 1: 42</li>
+            <li>Odpowiedź 2: Przykładowa instrukcja</li>
+            <li>Odpowiedź 3: Link do zasobu: <a href="#">pliki.zip</a></li>
+          </ul>
+        `;
+        box.style.display = 'block';
+      } else {
+        box.style.display = 'none';
+        // możesz opcjonalnie pokazać komunikat zamiast ukrywać
+        // alert('Załadowanie anulowane.');
+      }
+    });
+  </script>
+</body>
+</html>
