@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Przykład let</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #333; color: #fff; }
+    h1 { color: #0af; }
+    pre { background: #222; padding: 10px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Użycie let</h1>
+  <div id="output"></div>
+
+  <script>
+    let counter = 0;
+    console.log("Start counter =", counter);
+
+    counter++;
+    console.log("Po zwiększeniu counter =", counter);
+
+    let output = `
+      <pre>
+      let counter = 0
+      counter++ → ${counter}
+      Zmienna let może być zmieniana, ale nie można jej redeklarować w tym samym zakresie.
+      </pre>
+    `;
+    document.getElementById("output").innerHTML = output;
+  </script>
+</body>
+</html>
