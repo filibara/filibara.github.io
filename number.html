@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Konwersja Number()</title>
+  <style>
+    body { font-family: Consolas, monospace; padding: 20px; background: #222; color: #eee; }
+    h1 { color: #0f0; }
+    pre { background: #111; padding: 10px; border-radius: 6px; }
+    .good { color: #0f0; }
+    .bad { color: #f33; }
+  </style>
+</head>
+<body>
+  <h1>Konwersja w JS – Number()</h1>
+  <div id="output"></div>
+
+  <script>
+    let tekst1 = "123";
+    let tekst2 = "45.67";
+    let tekst3 = "abc";
+    let tekst4 = "007";
+
+    // konwersje
+    let liczba1 = Number(tekst1);
+    let liczba2 = Number(tekst2);
+    let liczba3 = Number(tekst3); // NaN
+    let liczba4 = Number(tekst4);
+
+    console.log("Konwersja '123' →", liczba1);
+    console.log("Konwersja '45.67' →", liczba2);
+    console.log("Konwersja 'abc' →", liczba3);
+    console.log("Konwersja '007' →", liczba4);
+
+    let output = `
+      <pre>
+      "123"    → <span class="good">${liczba1}</span>
+      "45.67"  → <span class="good">${liczba2}</span>
+      "abc"    → <span class="bad">${liczba3}</span> (NaN – Not a Number)
+      "007"    → <span class="good">${liczba4}</span>
+      </pre>
+    `;
+
+    document.getElementById("output").innerHTML = output;
+  </script>
+</body>
+</html>
