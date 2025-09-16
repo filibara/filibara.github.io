@@ -1,4 +1,32 @@
-<!DOCTYPE HTML>
-<HTML LANG="PL">
-  
-</HTML>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Przykład const</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #222; color: #0f0; }
+    h1 { color: #ff0; }
+    pre { background: #111; padding: 10px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Użycie const</h1>
+  <div id="output"></div>
+
+  <script>
+    const pi = 3.14159;
+    console.log("Stała pi =", pi);
+
+    let output = `
+      <pre>
+      Zadeklarowałem const pi = ${pi}
+      Próba zmiany const zakończy się błędem.
+      </pre>
+    `;
+    document.getElementById("output").innerHTML = output;
+
+    // próba zmiany (zakomentowana, bo wywaliłoby błąd)
+    // pi = 3.15;
+  </script>
+</body>
+</html>
