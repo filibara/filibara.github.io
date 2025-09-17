@@ -67,6 +67,7 @@ main {
 }
 
 footer {
+  clear: both;
   background-color: #2e7d32;
   color: white;
   text-align: center;
