@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operatory w JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3fdf3;
+      color: #1b5e20;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2e7d32;
+    }
+
+    .rows {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #a5d6a7, #81c784);
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+      margin-bottom: 10px;
+      text-align: center;
+      color: #1b5e20;
+    }
+
+    code {
+      background: #e8f5e9;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .console-info {
+      font-size: 0.9em;
+      color: #2e7d32;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Operatory w JavaScript</h1>
+
+  <main class="rows">
+    <!-- Rząd 1 -->
+    <div class="row">
+      <section class="card">
+        <h2>Arytmetyczne</h2>
+        <p>Dodawanie: <code>2 + 3 = 5</code></p>
+        <p>Odejmowanie: <code>5 - 2 = 3</code></p>
+        <p>Mnożenie: <code>4 * 2 = 8</code></p>
+        <p>Dzielenie: <code>8 / 2 = 4</code></p>
+        <p>Modulo: <code>7 % 3 = 1</code></p>
+      </section>
+
+      <section class="card">
+        <h2>Logiczne</h2>
+        <p><code>true && false = false</code></p>
+        <p><code>true || false = true</code></p>
+        <p><code>!true = false</code></p>
+      </section>
+
+      <section class="card">
+        <h2>Bitowe</h2>
+        <p><code>5 & 1 = 1</code></p>
+        <p><code>5 | 1 = 5</code></p>
+        <p><code>5 ^ 1 = 4</code></p>
+        <p><code>~5 = -6</code></p>
+      </section>
+    </div>
+
+    <!-- Rząd 2 -->
+    <div class="row">
+      <section class="card">
+        <h2>Przypisania</h2>
+        <p><code>x = 5</code></p>
+        <p><code>x += 2</code> (dodanie i przypisanie)</p>
+        <p><code>x -= 1</code> (odjęcie i przypisanie)</p>
+      </section>
+
+      <section class="card">
+        <h2>Porównania</h2>
+        <p><code>5 == "5" → true</code></p>
+        <p><code>5 === "5" → false</code></p>
+        <p><code>7 > 3 → true</code></p>
+        <p><code>7 <= 3 → false</code></p>
+      </section>
+
+      <section class="card">
+        <h2>Łańcuchowy</h2>
+        <p>Łączenie stringów:</p>
+        <p><code>"Hello" + " World" = "Hello World"</code></p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
