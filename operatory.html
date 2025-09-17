@@ -1,1 +1,308 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JS Operators Playground</title>
+  <style>
+    :root{
+      --bg:#07120b;
+      --panel:#0b2918;
+      --accent:#1db954; /* zielony */
+      --muted:#8fb99a;
+      --card:#062014;
+      --text:#e6f8ea;
+      --danger:#ff6b6b;
+    }
+    body{
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg,var(--bg),#05130a 60%);
+      color:var(--text);
+      margin:0;
+      padding:24px;
+    }
+    header{ text-align:left; margin-bottom:18px; }
+    h1{ margin:0 0 6px; color:var(--accent); font-size:1.6rem; }
+    p.lead{ margin:0 0 18px; color:var(--muted); }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:16px;
+    }
+
+    .card{
+      background:linear-gradient(180deg,var(--panel),var(--card));
+      border-radius:12px;
+      padding:14px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.6);
+      border:1px solid rgba(29,185,84,0.08);
+    }
+    .card h2{ margin:0 0 8px; color:var(--accent); font-size:1.05rem;}
+    .note{ color:var(--muted); font-size:0.9rem; margin-bottom:10px;}
+    .example-row{ display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap;}
+    .btn{
+      background:var(--accent);
+      color:#04220f;
+      border:none;
+      padding:8px 10px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .btn.secondary{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .out{
+      margin-top:10px;
+      padding:10px;
+      border-radius:8px;
+      background:rgba(0,0,0,0.25);
+      border:1px solid rgba(255,255,255,0.03);
+      min-height:44px;
+      color:var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      white-space:pre-wrap;
+    }
+    .label{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:0.8rem;
+      margin-left:6px;
+    }
+    .consoleOnly{
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,70,70,0.01));
+      border-left:4px solid var(--danger);
+    }
+    footer{ margin-top:18px; color:var(--muted); font-size:0.9rem; text-align:center;}
+    code.small{ font-size:0.95rem; color:var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>JS Operators — playground</h1>
+    <p class="lead">Przykłady operatorów w JS. Każdy przykład można wywołać przyciskiem. Jeśli coś jest oznaczone <span class="label">console-only</span>, sprawdź <code>Console</code> (F12).</p>
+  </header>
+
+  <main class="grid">
+    <!-- Arithmetic -->
+    <section class="card">
+      <h2>Arytmetyczne ➜ + − * / %</h2>
+      <p class="note">Dodawanie (number & string), odejmowanie, mnożenie, dzielenie i modulo. Wynik pokazujemy na stronie.</p>
+
+      <div class="example-row">
+        <button class="btn" id="aRun">Uruchom arytmetykę</button>
+        <button class="btn secondary" id="aReset">Wyczyść</button>
+      </div>
+
+      <div id="arithOut" class="out" aria-live="polite"></div>
+    </section>
+
+    <!-- Logical -->
+    <section class="card">
+      <h2>Logiczne ➜ &&, ||, !</h2>
+      <p class="note">Kombinacje booleanów; pokażemy przykłady z krótkim opisem. (Widoczne na stronie)</p>
+
+      <div class="example-row">
+        <button class="btn" id="lRun">Uruchom logiczne</button>
+      </div>
+
+      <div id="logicOut" class="out"></div>
+    </section>
+
+    <!-- Bitwise -->
+    <section class="card">
+      <h2>Bitowe ➜ &, |, ^, ~, <<, >>, >>></h2>
+      <p class="note">Operacje na bitach (liczby całkowite). Wyniki w konsoli i krótkie streszczenie na stronie.</p>
+
+      <div class="example-row">
+        <button class="btn" id="bRun">Uruchom bitowe</button>
+      </div>
+
+      <div id="bitOut" class="out consoleOnly">Console-only: zobacz DevTools → Console</div>
+    </section>
+
+    <!-- Assignment -->
+    <section class="card">
+      <h2>Przypisania ➜ =, +=, -=, *=, /=, %=, <<=, &=, |=, ^=</h2>
+      <p class="note">Modyfikacja wartości zmiennych. Pokazujemy krok po kroku na stronie.</p>
+
+      <div class="example-row">
+        <button class="btn" id="asRun">Uruchom przypisania</button>
+      </div>
+
+      <div id="assignOut" class="out"></div>
+    </section>
+
+    <!-- Comparison -->
+    <section class="card">
+      <h2>Porównania ➜ ==, ===, !=, !==, &lt; &gt; &lt;= &gt;=</h2>
+      <p class="note">Różnica między == i ===. Wyniki pokazane na stronie i w konsoli.</p>
+
+      <div class="example-row">
+        <button class="btn" id="cRun">Uruchom porównania</button>
+      </div>
+
+      <div id="cmpOut" class="out"></div>
+    </section>
+
+    <!-- String (łańcuchowy) -->
+    <section class="card">
+      <h2>Łączenie łańcuchów (String concatenation) ➜ +</h2>
+      <p class="note">Operator + działa dla stringów jako concatenation. Pokażemy też template literals.</p>
+
+      <div class="example-row">
+        <button class="btn" id="sRun">Uruchom stringi</button>
+      </div>
+
+      <div id="strOut" class="out"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div>Autor: filibara · przykłady dla nauki JS · Sprawdź konsolę dla <code>console-only</code> przykładów.</div>
+  </footer>
+
+  <script>
+    // HELPERS
+    const el = id => document.getElementById(id);
+    const fmt = text => text.replace(/\n\s+/g,"\n").trim();
+
+    /* ---------- ARYTMETYCZNE ---------- */
+    el('aRun').addEventListener('click', () => {
+      const a = 7;
+      const b = 3;
+      const addNums = a + b;
+      const sub = a - b;
+      const mul = a * b;
+      const div = (a / b).toFixed(3);
+      const mod = a % b;
+
+      // przykład + z stringiem
+      const strAdd = "7" + 3; // konkatenacja: "73"
+
+      const out = `
+        ${a} + ${b} = ${addNums}
+        ${a} - ${b} = ${sub}
+        ${a} * ${b} = ${mul}
+        ${a} / ${b} = ${div}
+        ${a} % ${b} = ${mod}
+
+        "7" + 3 → "${strAdd}"  (string concatenation kiedy jeden operand to string)
+      `;
+      el('arithOut').textContent = fmt(out);
+
+      // extra: pokaż też w konsoli
+      console.log('ARITHMETIC:', {a,b, addNums, sub, mul, div, mod, strAdd});
+    });
+    el('aReset').addEventListener('click', () => el('arithOut').textContent = '');
+
+    /* ---------- LOGICZNE ---------- */
+    el('lRun').addEventListener('click', () => {
+      const t = true, f = false;
+      const and = t && f;
+      const or = t || f;
+      const notT = !t;
+      const shortCircuit = null || "fallback"; // przykład krótkiego spięcia
+
+      const out = `
+        true && false → ${and}   (konjunkt: zwraca true gdy obie prawdziwe)
+        true || false → ${or}    (alternatywa: true gdy przynajmniej jedna prawda)
+        !true → ${notT}          (negacja)
+
+        null || "fallback" → "${shortCircuit}" (przykład short-circuit)
+      `;
+      el('logicOut').textContent = fmt(out);
+      console.log('LOGIC:', {and,or,notT, shortCircuit});
+    });
+
+    /* ---------- BITOWE (console-only) ---------- */
+    el('bRun').addEventListener('click', () => {
+      // Wyniki wypisane do konsoli (oznaczone na stronie jako console-only)
+      const x = 5; // 0101
+      const y = 3; // 0011
+
+      console.log('BITWISE EXAMPLES - check console for details:');
+      console.log('x & y =', x & y);   // 0101 & 0011 = 0001 -> 1
+      console.log('x | y =', x | y);   // 0111 -> 7
+      console.log('x ^ y =', x ^ y);   // 0110 -> 6
+      console.log('~x    =', ~x);      // bitwise NOT
+      console.log('x << 1 =', x << 1); // shift left -> 10
+      console.log('x >> 1 =', x >> 1); // shift right -> 2
+      console.log('x >>> 1 =', x >>> 1);// zero-fill right shift
+    });
+
+    /* ---------- PRZYPISANIA ---------- */
+    el('asRun').addEventListener('click', () => {
+      let a = 10;
+      const steps = [];
+      steps.push(`start a = ${a}`);
+
+      a += 5; steps.push(`a += 5 → ${a}`);
+      a -= 3; steps.push(`a -= 3 → ${a}`);
+      a *= 2; steps.push(`a *= 2 → ${a}`);
+      a /= 4; steps.push(`a /= 4 → ${a}`);
+      a %= 3; steps.push(`a %= 3 → ${a}`);
+
+      // bitowe przypisania dla demo
+      let b = 2;
+      steps.push(`start b = ${b}`);
+      b <<= 1; steps.push(`b <<= 1 → ${b}`);
+      b |= 1;  steps.push(`b |= 1  → ${b}`);
+      b ^= 3;  steps.push(`b ^= 3  → ${b}`);
+
+      el('assignOut').textContent = fmt(steps.join('\n'));
+      console.log('ASSIGNMENT steps:', steps);
+    });
+
+    /* ---------- PORÓWNANIA ---------- */
+    el('cRun').addEventListener('click', () => {
+      const outputs = [];
+      outputs.push(`5 == "5"  → ${5 == "5"}   (luźne porównanie, typy konwertowane)`);
+      outputs.push(`5 === "5" → ${5 === "5"}  (ściśle równe? false bo typy różne)`);
+      outputs.push(`5 != "5"  → ${5 != "5"}`);
+      outputs.push(`5 !== "5" → ${5 !== "5"}`);
+      outputs.push(`7 > 3    → ${7 > 3}`);
+      outputs.push(`3 < 7    → ${3 < 7}`);
+      outputs.push(`3 >= 3   → ${3 >= 3}`);
+      outputs.push(`2 <= 1   → ${2 <= 1}`);
+
+      el('cmpOut').textContent = fmt(outputs.join('\n'));
+      console.log('COMPARISONS:', outputs);
+    });
+
+    /* ---------- STRING / ŁĄCZENIE ---------- */
+    el('sRun').addEventListener('click', () => {
+      const name = "Alex";
+      const age = 30;
+      const concat = "Name: " + name + ", Age: " + age;
+      const templ = `Name: ${name}, Age: ${age} (template literal)`;
+      const plusWithNumber = "5" + 2; // "52"
+      const plusWithNumberBad = 5 + "2"; // "52"
+
+      const out = `
+        "Name: " + name + age  → ${concat}
+        \`Name: \${name}, Age: \${age}\` → ${templ}
+        "5" + 2 → "${plusWithNumber}" (concatenation)
+        5 + "2" → "${plusWithNumberBad}" (concatenation when operand is string)
+      `;
+      el('strOut').textContent = fmt(out);
+      console.log('STRING examples:', {concat, templ, plusWithNumber});
+    });
+
+    // accessibility: allow Enter on focused buttons
+    document.querySelectorAll('.btn').forEach(b => {
+      b.addEventListener('keyup', e => {
+        if(e.key === 'Enter') b.click();
+      });
+    });
+  </script>
+</body>
+</html>
 
