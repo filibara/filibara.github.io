@@ -1,1 +1,171 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instrukcje sterujące w JS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3fdf3;
+      color: #1b5e20;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      background-color: #2e7d32;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .block {
+      background-color: #a5d6a7;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    button {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #1b5e20;
+    }
+    .result {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #004d00;
+    }
+  </style>
+</head>
+<body>
+  <h1>Instrukcje sterujące w JavaScript</h1>
+
+  <!-- IF -->
+  <div class="block">
+    <h2>Instrukcja <code>if</code></h2>
+    <p>Trzy warianty użycia instrukcji <code>if</code>:</p>
+    <ul>
+      <li><b>Zwykły if</b></li>
+      <li><b>if...else</b></li>
+      <li><b>if bez klamerek</b></li>
+    </ul>
+    <button onclick="testIf()">Sprawdź przykład</button>
+    <div class="result" id="ifResult"></div>
+  </div>
+
+  <!-- SWITCH -->
+  <div class="block">
+    <h2>Instrukcja <code>switch</code></h2>
+    <p>Pozwala porównywać jedną wartość do wielu przypadków.</p>
+    <button onclick="testSwitch()">Sprawdź przykład</button>
+    <div class="result" id="switchResult"></div>
+  </div>
+
+  <!-- FOR -->
+  <div class="block">
+    <h2>Pętla <code>for</code></h2>
+    <p>Pętla używana do wykonywania kodu określoną liczbę razy.</p>
+    <button onclick="testFor()">Sprawdź przykład</button>
+    <div class="result" id="forResult"></div>
+  </div>
+
+  <!-- WHILE -->
+  <div class="block">
+    <h2>Pętla <code>while</code></h2>
+    <p>Wykonuje kod dopóki warunek jest prawdziwy.</p>
+    <button onclick="testWhile()">Sprawdź przykład</button>
+    <div class="result" id="whileResult"></div>
+  </div>
+
+  <!-- DO WHILE -->
+  <div class="block">
+    <h2>Pętla <code>do...while</code></h2>
+    <p>Pętla zawsze wykona się przynajmniej raz, zanim sprawdzi warunek.</p>
+    <button onclick="testDoWhile()">Sprawdź przykład</button>
+    <div class="result" id="doWhileResult"></div>
+  </div>
+
+  <!-- TERNARY -->
+  <div class="block">
+    <h2>Instrukcja przetwarzania warunkowego (<code>? :</code>)</h2>
+    <p>Skrócona forma <code>if...else</code>.</p>
+    <button onclick="testTernary()">Sprawdź przykład</button>
+    <div class="result" id="ternaryResult"></div>
+  </div>
+
+  <script>
+    function testIf() {
+      let age = 18;
+      let result = "";
+      // zwykły if
+      if (age >= 18) {
+        result += "Masz 18 lat lub więcej. <br>";
+      }
+      // if...else
+      if (age < 18) {
+        result += "Niepełnoletni.<br>";
+      } else {
+        result += "Pełnoletni.<br>";
+      }
+      // if bez klamerek
+      if (age === 18) result += "Masz dokładnie 18 lat.<br>";
+
+      document.getElementById("ifResult").innerHTML = result;
+    }
+
+    function testSwitch() {
+      let day = 2;
+      let result = "";
+      switch(day) {
+        case 1: result = "Poniedziałek"; break;
+        case 2: result = "Wtorek"; break;
+        case 3: result = "Środa"; break;
+        default: result = "Inny dzień"; break;
+      }
+      document.getElementById("switchResult").innerHTML = "Dzień: " + result;
+    }
+
+    function testFor() {
+      let text = "";
+      for (let i = 1; i <= 5; i++) {
+        text += "Liczba: " + i + "<br>";
+      }
+      document.getElementById("forResult").innerHTML = text;
+    }
+
+    function testWhile() {
+      let i = 1;
+      let text = "";
+      while (i <= 3) {
+        text += "Iteracja " + i + "<br>";
+        i++;
+      }
+      document.getElementById("whileResult").innerHTML = text;
+    }
+
+    function testDoWhile() {
+      let i = 1;
+      let text = "";
+      do {
+        text += "Iteracja " + i + "<br>";
+        i++;
+      } while (i <= 3);
+      document.getElementById("doWhileResult").innerHTML = text;
+    }
+
+    function testTernary() {
+      let score = 75;
+      let result = (score >= 50) ? "Zaliczone!" : "Niezaliczone!";
+      document.getElementById("ternaryResult").innerHTML = result;
+    }
+  </script>
+</body>
+</html>
 
