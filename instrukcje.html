@@ -42,6 +42,15 @@
       font-weight: bold;
       color: #004d00;
     }
+    .console-box {
+      background-color: #1b5e20;
+      color: #f3fdf3;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 15px;
+      font-family: "Courier New", monospace;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
@@ -58,6 +67,15 @@
     </ul>
     <button onclick="testIf()">Sprawdź przykład</button>
     <div class="result" id="ifResult"></div>
+    <div class="console-box">
+if (warunek) {
+    // kod gdy warunek jest prawdziwy
+} else {
+    // kod gdy warunek jest fałszywy
+}
+
+if (warunek) // kod bez klamerek
+    </div>
   </div>
 
   <!-- SWITCH -->
@@ -66,6 +84,18 @@
     <p>Pozwala porównywać jedną wartość do wielu przypadków.</p>
     <button onclick="testSwitch()">Sprawdź przykład</button>
     <div class="result" id="switchResult"></div>
+    <div class="console-box">
+switch (zmienna) {
+  case 1:
+    // kod
+    break;
+  case 2:
+    // kod
+    break;
+  default:
+    // kod domyślny
+}
+    </div>
   </div>
 
   <!-- FOR -->
@@ -74,6 +104,11 @@
     <p>Pętla używana do wykonywania kodu określoną liczbę razy.</p>
     <button onclick="testFor()">Sprawdź przykład</button>
     <div class="result" id="forResult"></div>
+    <div class="console-box">
+for (let i = 0; i &lt; liczba; i++) {
+  // kod wykonywany w pętli
+}
+    </div>
   </div>
 
   <!-- WHILE -->
@@ -82,6 +117,11 @@
     <p>Wykonuje kod dopóki warunek jest prawdziwy.</p>
     <button onclick="testWhile()">Sprawdź przykład</button>
     <div class="result" id="whileResult"></div>
+    <div class="console-box">
+while (warunek) {
+  // kod wykonywany dopóki warunek true
+}
+    </div>
   </div>
 
   <!-- DO WHILE -->
@@ -90,6 +130,11 @@
     <p>Pętla zawsze wykona się przynajmniej raz, zanim sprawdzi warunek.</p>
     <button onclick="testDoWhile()">Sprawdź przykład</button>
     <div class="result" id="doWhileResult"></div>
+    <div class="console-box">
+do {
+  // kod wykonywany raz na start
+} while (warunek);
+    </div>
   </div>
 
   <!-- TERNARY -->
@@ -98,25 +143,24 @@
     <p>Skrócona forma <code>if...else</code>.</p>
     <button onclick="testTernary()">Sprawdź przykład</button>
     <div class="result" id="ternaryResult"></div>
+    <div class="console-box">
+warunek ? wartość_jeśli_true : wartość_jeśli_false;
+    </div>
   </div>
 
   <script>
     function testIf() {
       let age = 18;
       let result = "";
-      // zwykły if
       if (age >= 18) {
         result += "Masz 18 lat lub więcej. <br>";
       }
-      // if...else
       if (age < 18) {
         result += "Niepełnoletni.<br>";
       } else {
         result += "Pełnoletni.<br>";
       }
-      // if bez klamerek
       if (age === 18) result += "Masz dokładnie 18 lat.<br>";
-
       document.getElementById("ifResult").innerHTML = result;
     }
 
@@ -168,4 +212,3 @@
   </script>
 </body>
 </html>
-
