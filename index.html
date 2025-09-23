@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INF.03</title>
   <link rel="stylesheet" href="styl.css">
+  <style>
+    /* Styl do easter egga */
+    #easter-egg {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #2e7d32;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      display: none;
+      z-index: 9999;
+      animation: pop 0.4s ease-in-out;
+    }
+
+    @keyframes pop {
+      0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -44,11 +68,40 @@
     <p>&copy; 2025 filibara.github.io</p>
   </footer>
 
+  <!-- Ukryty easter egg -->
+  <div id="easter-egg">🎉 Sekret odkryty! Brawo filibar 😎🔥</div>
+
   <script>
     // JS do przełączania trybu
     const toggleBtn = document.getElementById("contrast-toggle");
     toggleBtn.addEventListener("click", () => {
       document.body.classList.toggle("contrast");
+    });
+
+    // Easter egg: wpisanie "filibar"
+    const secret = "filibar";
+    let input = "";
+
+    document.addEventListener("keydown", (e) => {
+      input += e.key.toLowerCase();
+
+      if (input.includes(secret)) {
+        const egg = document.getElementById("easter-egg");
+        egg.style.display = "block";
+
+        // Znika po 3 sekundach
+        setTimeout(() => {
+          egg.style.display = "none";
+        }, 3000);
+
+        // reset wpisywania
+        input = "";
+      }
+
+      // jeśli użytkownik wpisuje coś innego → przycinamy długość
+      if (input.length > secret.length) {
+        input = input.slice(-secret.length);
+      }
     });
   </script>
 </body>
