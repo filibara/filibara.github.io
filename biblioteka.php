@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Biblioteka miejska</title>
-    <link rel="stylesheet" href="styl.css">
+    <link rel="stylesheet" href="styl2.css">
 </head>
 
 <body>
