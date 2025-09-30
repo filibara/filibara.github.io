@@ -1,1 +1,306 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>JS Functions Playground — parseInt / parseFloat / Number / isNaN / safeParse</title>
+<style>
+  :root {
+    --bg: #07120b;
+    --panel: #082713;
+    --card: #0b2b14;
+    --accent: #1db954;
+    --muted: #8fb99a;
+    --text: #e6f8ea;
+    --term-bg: #04120a;
+    --term-border: rgba(29,185,84,0.15);
+  }
+  * { box-sizing: border-box; }
+  body{
+    margin:0;
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg,var(--bg),#05130a 60%);
+    color:var(--text);
+    padding:20px;
+  }
+  header { display:flex; align-items:center; gap:18px; margin-bottom:18px; }
+  h1 { margin:0; color:var(--accent); font-size:1.4rem; }
+  p.lead { margin:0; color:var(--muted); }
+
+  .layout {
+    display:grid;
+    grid-template-columns: 420px 1fr;
+    gap:18px;
+    align-items:start;
+  }
+
+  .card {
+    background: linear-gradient(180deg,var(--panel),var(--card));
+    border-radius:12px;
+    padding:14px;
+    border:1px solid var(--term-border);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  }
+
+  .card h2 { margin:0 0 8px; color:var(--accent); font-size:1.05rem; }
+  .note { color:var(--muted); font-size:0.92rem; margin-bottom:10px; }
+
+  .examples { display:flex; flex-direction:column; gap:10px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  button {
+    background:var(--accent);
+    color:#04220f;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  button.ghost {
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  .small { font-size:0.85rem; color:var(--muted); }
+
+  /* terminal */
+  .terminal {
+    background: linear-gradient(180deg, var(--term-bg), #02110a);
+    border-radius:10px;
+    padding:12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    color: #bff3c8;
+    min-height:220px;
+    max-height:520px;
+    overflow:auto;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .log-line { padding:6px 8px; border-radius:6px; margin-bottom:8px; background: rgba(255,255,255,0.01); }
+  .ok { color: #bff3c8; }
+  .bad { color: #ff9b9b; }
+  .meta { color: var(--muted); font-size:0.85rem; }
+  pre.snip {
+    background: rgba(0,0,0,0.2);
+    padding:10px;
+    border-radius:6px;
+    overflow:auto;
+    font-size:0.9rem;
+  }
+
+  footer { margin-top:18px; color:var(--muted); text-align:center; font-size:0.9rem; }
+  @media (max-width:980px){
+    .layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>JS Functions Playground</h1>
+      <p class="lead">parseInt • parseFloat • Number • isNaN • safeParse</p>
+    </div>
+    <div style="margin-left:auto" class="small">Click examples to run — results show in the terminal</div>
+  </header>
+
+  <main class="layout">
+    <!-- left column - controls & explanations -->
+    <section class="card" aria-labelledby="controls-title">
+      <h2 id="controls-title">Examples & Controls</h2>
+      <p class="note">Kliknij przycisk, aby zobaczyć rezultat działania funkcji. Każdy przykład ma krótki opis i kod (snippet).</p>
+
+      <div class="examples">
+
+        <!-- parseInt -->
+        <div>
+          <h3 style="margin:6px 0 6px;color:var(--accent)">parseInt(string, [radix])</h3>
+          <div class="small meta">Parsuje <code>string</code> na liczbę całkowitą. Radix opcjonalny (podstawa, np. 10).</div>
+          <pre class="snip">parseInt("123") → 123
+parseInt("08") → 8 (use radix 10 to be safe)
+parseInt("10px") → 10</pre>
+          <div class="row">
+            <button onclick="runParseInt()">Run parseInt</button>
+            <button class="ghost" onclick="printCode('parseInt', `parseInt(\"123\") // 123\nparseInt(\"08\", 10) // 8\nparseInt(\"10px\") // 10`)">Show snippet</button>
+          </div>
+        </div>
+
+        <!-- parseFloat -->
+        <div style="margin-top:12px">
+          <h3 style="margin:6px 0 6px;color:var(--accent)">parseFloat(string)</h3>
+          <div class="small meta">Parsuje liczbę zmiennoprzecinkową z początku stringa. Zwraca <code>NaN</code> jeśli nie zaczyna się liczbą.</div>
+          <pre class="snip">parseFloat("45.67") → 45.67
+parseFloat("3.14abc") → 3.14
+parseFloat("abc3.14") → NaN</pre>
+          <div class="row">
+            <button onclick="runParseFloat()">Run parseFloat</button>
+            <button class="ghost" onclick="printCode('parseFloat', `parseFloat(\"45.67\") // 45.67\nparseFloat(\"3.14abc\") // 3.14`)">Show snippet</button>
+          </div>
+        </div>
+
+        <!-- Number -->
+        <div style="margin-top:12px">
+          <h3 style="margin:6px 0 6px;color:var(--accent)">Number(value)</h3>
+          <div class="small meta">Konwertuje wartość na liczbę. Wymaga, żeby cały string był liczbą (trimowane). Zwraca <code>NaN</code> dla nieprawidłowych wartości.</div>
+          <pre class="snip">Number(" 123 ") → 123
+Number("12e2") → 1200
+Number("10px") → NaN</pre>
+          <div class="row">
+            <button onclick="runNumber()">Run Number()</button>
+            <button class="ghost" onclick="printCode('Number', `Number(\" 123 \") // 123\nNumber(\"12e2\") // 1200\nNumber(\"10px\") // NaN`)">Show snippet</button>
+          </div>
+        </div>
+
+        <!-- isNaN -->
+        <div style="margin-top:12px">
+          <h3 style="margin:6px 0 6px;color:var(--accent)">isNaN(value)</h3>
+          <div class="small meta">Sprawdza, czy wartość jest <code>NaN</code>. Uwaga: przed ES6 trzeba być ostrożnym; lepiej używać <code>Number.isNaN</code>.</div>
+          <pre class="snip">isNaN("abc") → true
+isNaN("123") → false
+Number.isNaN(NaN) → true</pre>
+          <div class="row">
+            <button onclick="runIsNaN()">Run isNaN</button>
+            <button class="ghost" onclick="printCode('isNaN', `isNaN(\"abc\") // true\nisNaN(\"123\") // false\nNumber.isNaN(NaN) // true`)">Show snippet</button>
+          </div>
+        </div>
+
+        <!-- safeParse custom -->
+        <div style="margin-top:12px">
+          <h3 style="margin:6px 0 6px;color:var(--accent)">safeParse(value) — custom helper</h3>
+          <div class="small meta">Moja funkcja: próbuje <code>Number()</code>, potem <code>parseFloat()</code>, zwraca obiekt z metodą i wartością; przy <code>NaN</code> proponuje fallback.</div>
+          <pre class="snip">safeParse(" 12.34 ") → { method: "Number", value: 12.34 }
+safeParse("12px") → { method: "parseFloat", value: 12 }
+safeParse("abc") → { method: "none", value: NaN }</pre>
+          <div class="row">
+            <button onclick="runSafeParse()">Run safeParse</button>
+            <button class="ghost" onclick="printCode('safeParse', `// tries Number, then parseFloat\nsafeParse(\" 12.34 \")\nsafeParse(\"12px\")\nsafeParse(\"abc\")`)">Show snippet</button>
+          </div>
+        </div>
+
+        <div style="margin-top:14px" class="small">
+          <button class="ghost" onclick="clearTerminal()">Clear terminal</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- right column - terminal -->
+    <section class="card" aria-labelledby="terminal-title">
+      <h2 id="terminal-title">Terminal — Output</h2>
+      <div id="terminal" class="terminal" role="log" aria-live="polite">
+        <div class="log-line meta">Welcome — click examples to run. Terminal shows both result and hint.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>filibara · JS playground · examples for class</footer>
+
+<script>
+  // utility: append to terminal
+  const term = document.getElementById('terminal');
+  function appendLine(html, cls='log-line') {
+    const div = document.createElement('div');
+    div.className = cls;
+    div.innerHTML = html;
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+  }
+  function clearTerminal() {
+    term.innerHTML = '<div class="log-line meta">Terminal cleared.</div>';
+  }
+  function printCode(title, snippet) {
+    appendLine(`<div class="meta">Snippet: <strong>${title}</strong></div><pre style="margin-top:8px; background:rgba(255,255,255,0.02); padding:8px; border-radius:6px;">${snippet}</pre>`);
+  }
+
+  // Examples implementations
+
+  // parseInt examples
+  function runParseInt() {
+    clearTerminal();
+    appendLine('<div class="meta">parseInt examples</div>');
+    const a = parseInt("123");
+    appendLine(`<div>parseInt("123") => <span class="ok">${a}</span></div>`);
+    const b = parseInt("08", 10); // safe radix
+    appendLine(`<div>parseInt("08", 10) => <span class="ok">${b}</span> (use radix to avoid octal ambiguity)</div>`);
+    const c = parseInt("10px");
+    appendLine(`<div>parseInt("10px") => <span class="ok">${c}</span> (parses until non-digit)</div>`);
+    appendLine('<div class="meta">Note: parseInt returns an integer (drops decimals).</div>');
+    console.log('parseInt:', {a,b,c});
+  }
+
+  // parseFloat examples
+  function runParseFloat() {
+    clearTerminal();
+    appendLine('<div class="meta">parseFloat examples</div>');
+    const a = parseFloat("45.67");
+    appendLine(`<div>parseFloat("45.67") => <span class="ok">${a}</span></div>`);
+    const b = parseFloat("3.14abc");
+    appendLine(`<div>parseFloat("3.14abc") => <span class="ok">${b}</span> (reads initial float)</div>`);
+    const c = parseFloat("abc3.14");
+    appendLine(`<div>parseFloat("abc3.14") => <span class="bad">${c}</span> (no leading number → NaN)</div>`);
+    appendLine('<div class="meta">Tip: parseFloat keeps decimals; parseInt does not.</div>');
+    console.log('parseFloat:', {a,b,c});
+  }
+
+  // Number examples
+  function runNumber() {
+    clearTerminal();
+    appendLine('<div class="meta">Number() examples</div>');
+    const a = Number(" 123 ");
+    appendLine(`<div>Number(" 123 ") => <span class="ok">${a}</span> (trims and converts whole string)</div>`);
+    const b = Number("12e2");
+    appendLine(`<div>Number("12e2") => <span class="ok">${b}</span> (scientific notation)</div>`);
+    const c = Number("10px");
+    appendLine(`<div>Number("10px") => <span class="${isNaN(c)?'bad':'ok'}">${c}</span> (invalid whole string → NaN)</div>`);
+    appendLine('<div class="meta">Number requires entire string to be numeric (except whitespace).</div>');
+    console.log('Number:', {a,b,c});
+  }
+
+  // isNaN examples
+  function runIsNaN() {
+    clearTerminal();
+    appendLine('<div class="meta">isNaN examples</div>');
+    const a = isNaN("abc");
+    appendLine(`<div>isNaN("abc") => <span class="${a? 'bad':'ok'}">${a}</span></div>`);
+    const b = isNaN("123");
+    appendLine(`<div>isNaN("123") => <span class="${b? 'bad':'ok'}">${b}</span></div>`);
+    const c = Number.isNaN(NaN);
+    appendLine(`<div>Number.isNaN(NaN) => <span class="bad">${c}</span> (recommended to use Number.isNaN)</div>`);
+    appendLine('<div class="meta">Note: isNaN coerces first; Number.isNaN is stricter.</div>');
+    console.log('isNaN:', {a,b,c});
+  }
+
+  // custom safeParse
+  function safeParse(val) {
+    // try Number first (strict), then parseFloat (lenient), otherwise NaN
+    const trimmed = (typeof val === 'string') ? val.trim() : val;
+    const n = Number(trimmed);
+    if (!Number.isNaN(n)) return { method: 'Number', value: n };
+    const f = parseFloat(trimmed);
+    if (!Number.isNaN(f)) return { method: 'parseFloat', value: f };
+    return { method: 'none', value: NaN };
+  }
+
+  function runSafeParse() {
+    clearTerminal();
+    appendLine('<div class="meta">safeParse examples</div>');
+    const a = safeParse(" 12.34 ");
+    appendLine(`<div>safeParse(" 12.34 ") => <span class="ok">${JSON.stringify(a)}</span></div>`);
+    const b = safeParse("12px");
+    appendLine(`<div>safeParse("12px") => <span class="ok">${JSON.stringify(b)}</span> (falls back to parseFloat)</div>`);
+    const c = safeParse("abc");
+    appendLine(`<div>safeParse("abc") => <span class="bad">${JSON.stringify(c)}</span> (no numeric content)</div>`);
+    appendLine('<div class="meta">Use safeParse when input may be messy; it tells you which method worked.</div>');
+    console.log('safeParse:', {a,b,c});
+  }
+
+  // Accessibility: keyboard shortcuts (optional)
+  document.addEventListener('keydown', (e) => {
+    if (e.altKey && e.key === '1') runParseInt();
+    if (e.altKey && e.key === '2') runParseFloat();
+    if (e.altKey && e.key === '3') runNumber();
+    if (e.altKey && e.key === '4') runIsNaN();
+    if (e.altKey && e.key === '5') runSafeParse();
+  });
+
+</script>
+</body>
+</html>
 
