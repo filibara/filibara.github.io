@@ -1,239 +1,234 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instrukcje sterujące w JS</title>
-  <style>
-    body {
-      font-family: "Consolas", monospace;
-      background-color: #0a0a0a;
-      color: #00ff99;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      background: linear-gradient(90deg, #00ff99, #00ccff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 2.2em;
-      margin-bottom: 25px;
-      text-shadow: 0 0 10px #00ff99;
-    }
-    .block {
-      background: #111;
-      padding: 20px;
-      margin: 20px auto;
-      border-radius: 12px;
-      border: 1px solid #00ff99;
-      box-shadow: 0 0 10px rgba(0,255,150,0.3);
-      max-width: 800px;
-    }
-    h2 {
-      color: #00ccff;
-      margin-bottom: 10px;
-    }
-    p, ul {
-      color: #b5f5d5;
-    }
-    button {
-      background: #00ff99;
-      color: #111;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin: 5px 8px 12px 0;
-      font-weight: bold;
-      font-size: 0.9em;
-      transition: 0.2s;
-      box-shadow: 0 0 8px #00ff99;
-    }
-    button:hover {
-      background: #00ccff;
-      box-shadow: 0 0 15px #00ccff;
-    }
-    .terminal {
-      background-color: #000;
-      color: #00ff99;
-      padding: 12px;
-      border-radius: 6px;
-      margin-top: 10px;
-      white-space: pre-wrap;
-      min-height: 40px;
-      font-family: "Courier New", monospace;
-      position: relative;
-    }
-    /* migający kursor w terminalu */
-    .terminal::after {
-      content: "█";
-      position: absolute;
-      right: 10px;
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Instrukcje sterujące w JS</title>
+<style>
+  :root {
+    --bg: #07120b;
+    --panel: #082713;
+    --card: #0b2b14;
+    --accent: #1db954;
+    --muted: #8fb99a;
+    --text: #e6f8ea;
+    --term-bg: #04120a;
+    --term-border: rgba(29,185,84,0.15);
+  }
+  * { box-sizing: border-box; }
+  body{
+    margin:0;
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg,var(--bg),#05130a 60%);
+    color:var(--text);
+    padding:20px;
+  }
+  header { display:flex; align-items:center; gap:18px; margin-bottom:18px; }
+  h1 { margin:0; color:var(--accent); font-size:1.4rem; }
+  p.lead { margin:0; color:var(--muted); }
+
+  .layout {
+    display:grid;
+    grid-template-columns: 420px 1fr;
+    gap:18px;
+    align-items:start;
+  }
+
+  .card {
+    background: linear-gradient(180deg,var(--panel),var(--card));
+    border-radius:12px;
+    padding:14px;
+    border:1px solid var(--term-border);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  }
+
+  .card h2 { margin:0 0 8px; color:var(--accent); font-size:1.05rem; }
+  .note { color:var(--muted); font-size:0.92rem; margin-bottom:10px; }
+
+  .examples { display:flex; flex-direction:column; gap:14px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  button {
+    background:var(--accent);
+    color:#04220f;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  button.ghost {
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  .small { font-size:0.85rem; color:var(--muted); }
+
+  /* terminal */
+  .terminal {
+    background: linear-gradient(180deg, var(--term-bg), #02110a);
+    border-radius:10px;
+    padding:12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    color: #bff3c8;
+    min-height:220px;
+    max-height:520px;
+    overflow:auto;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .log-line { padding:6px 8px; border-radius:6px; margin-bottom:8px; background: rgba(255,255,255,0.01); }
+  .ok { color: #bff3c8; }
+  .bad { color: #ff9b9b; }
+  .meta { color: var(--muted); font-size:0.85rem; }
+  pre.snip {
+    background: rgba(0,0,0,0.2);
+    padding:10px;
+    border-radius:6px;
+    overflow:auto;
+    font-size:0.9rem;
+  }
+
+  footer { margin-top:18px; color:var(--muted); text-align:center; font-size:0.9rem; }
+  @media (max-width:980px){
+    .layout { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
-  <h1>Instrukcje sterujące w JavaScript</h1>
+  <header>
+    <div>
+      <h1>Instrukcje sterujące w JS</h1>
+      <p class="lead">if • switch • for • while • do...while • ternary</p>
+    </div>
+    <div style="margin-left:auto" class="small">Kliknij przycisk — wynik pojawi się w terminalu</div>
+  </header>
 
-  <!-- IF -->
-  <div class="block">
-    <h2>Instrukcja <code>if</code></h2>
-    <p>Trzy warianty użycia instrukcji <code>if</code>:</p>
-    <ul>
-      <li>Zwykły <code>if</code></li>
-      <li><code>if...else</code></li>
-      <li><code>if</code> bez klamerek</li>
-    </ul>
-    <button onclick="runIf()">Uruchom przykład</button>
-    <button onclick="showCode('if')">Pokaż kod</button>
-    <div class="terminal" id="ifOutput"></div>
-  </div>
+  <main class="layout">
+    <!-- left column - controls -->
+    <section class="card">
+      <h2>Przykłady</h2>
+      <p class="note">Każdy przykład można uruchomić i podejrzeć snippet kodu.</p>
 
-  <!-- SWITCH -->
-  <div class="block">
-    <h2>Instrukcja <code>switch</code></h2>
-    <button onclick="runSwitch()">Uruchom przykład</button>
-    <button onclick="showCode('switch')">Pokaż kod</button>
-    <div class="terminal" id="switchOutput"></div>
-  </div>
+      <div class="examples">
 
-  <!-- FOR -->
-  <div class="block">
-    <h2>Pętla <code>for</code></h2>
-    <button onclick="runFor()">Uruchom przykład</button>
-    <button onclick="showCode('for')">Pokaż kod</button>
-    <div class="terminal" id="forOutput"></div>
-  </div>
+        <!-- IF -->
+        <div>
+          <h3 style="color:var(--accent)">if / else</h3>
+          <div class="small meta">Instrukcja warunkowa w trzech wariantach: zwykły, z else i bez klamerek.</div>
+          <pre class="snip">if (warunek) { ... } else { ... }</pre>
+          <div class="row">
+            <button onclick="runIf()">Uruchom if</button>
+            <button class="ghost" onclick="printCode('if', `if (age >= 18) { ... } else { ... }`)">Pokaż kod</button>
+          </div>
+        </div>
 
-  <!-- WHILE -->
-  <div class="block">
-    <h2>Pętla <code>while</code></h2>
-    <button onclick="runWhile()">Uruchom przykład</button>
-    <button onclick="showCode('while')">Pokaż kod</button>
-    <div class="terminal" id="whileOutput"></div>
-  </div>
+        <!-- SWITCH -->
+        <div>
+          <h3 style="color:var(--accent)">switch</h3>
+          <div class="small meta">Wybiera blok kodu na podstawie wartości zmiennej.</div>
+          <pre class="snip">switch(day) { case 1: ... }</pre>
+          <div class="row">
+            <button onclick="runSwitch()">Uruchom switch</button>
+            <button class="ghost" onclick="printCode('switch', `switch (day) { case 1: ... }`)">Pokaż kod</button>
+          </div>
+        </div>
 
-  <!-- DO WHILE -->
-  <div class="block">
-    <h2>Pętla <code>do...while</code></h2>
-    <button onclick="runDoWhile()">Uruchom przykład</button>
-    <button onclick="showCode('dowhile')">Pokaż kod</button>
-    <div class="terminal" id="doWhileOutput"></div>
-  </div>
+        <!-- FOR -->
+        <div>
+          <h3 style="color:var(--accent)">for</h3>
+          <div class="small meta">Pętla z licznikiem.</div>
+          <pre class="snip">for (let i=0; i<5; i++) { ... }</pre>
+          <div class="row">
+            <button onclick="runFor()">Uruchom for</button>
+            <button class="ghost" onclick="printCode('for', `for (let i=0; i<5; i++) { ... }`)">Pokaż kod</button>
+          </div>
+        </div>
 
-  <!-- TERNARY -->
-  <div class="block">
-    <h2>Instrukcja warunkowa (<code>? :</code>)</h2>
-    <button onclick="runTernary()">Uruchom przykład</button>
-    <button onclick="showCode('ternary')">Pokaż kod</button>
-    <div class="terminal" id="ternaryOutput"></div>
-  </div>
+        <!-- WHILE -->
+        <div>
+          <h3 style="color:var(--accent)">while</h3>
+          <div class="small meta">Wykonuje blok dopóki warunek jest spełniony.</div>
+          <div class="row">
+            <button onclick="runWhile()">Uruchom while</button>
+            <button class="ghost" onclick="printCode('while', `while (i < n) { ... }`)">Pokaż kod</button>
+          </div>
+        </div>
 
-  <script>
-    // --- Funkcje uruchamiające przykłady ---
-    function runIf() {
-      let age = 18;
-      let result = "";
-      if (age >= 18) result += "Masz 18 lat lub więcej.\n";
-      if (age < 18) result += "Niepełnoletni.\n";
-      else result += "Pełnoletni.\n";
-      if (age === 18) result += "Masz dokładnie 18 lat.\n";
-      document.getElementById("ifOutput").innerText = result;
-    }
+        <!-- DO WHILE -->
+        <div>
+          <h3 style="color:var(--accent)">do...while</h3>
+          <div class="small meta">Wykonuje blok co najmniej raz, a potem sprawdza warunek.</div>
+          <div class="row">
+            <button onclick="runDoWhile()">Uruchom do...while</button>
+            <button class="ghost" onclick="printCode('do...while', `do { ... } while (warunek);`)">Pokaż kod</button>
+          </div>
+        </div>
 
-    function runSwitch() {
-      let day = 2;
-      let result = "";
-      switch(day) {
-        case 1: result = "Poniedziałek"; break;
-        case 2: result = "Wtorek"; break;
-        case 3: result = "Środa"; break;
-        default: result = "Inny dzień"; break;
-      }
-      document.getElementById("switchOutput").innerText = "Dzień: " + result;
-    }
+        <!-- TERNARY -->
+        <div>
+          <h3 style="color:var(--accent)">?: (operator trójargumentowy)</h3>
+          <div class="small meta">Zapis warunku w skróconej formie.</div>
+          <pre class="snip">warunek ? wynik1 : wynik2</pre>
+          <div class="row">
+            <button onclick="runTernary()">Uruchom ternary</button>
+            <button class="ghost" onclick="printCode('ternary', `let x = cond ? a : b;`)">Pokaż kod</button>
+          </div>
+        </div>
 
-    function runFor() {
-      let text = "";
-      for (let i = 1; i <= 5; i++) {
-        text += "Liczba: " + i + "\n";
-      }
-      document.getElementById("forOutput").innerText = text;
-    }
+        <div class="small" style="margin-top:14px">
+          <button class="ghost" onclick="clearTerminal()">Wyczyść terminal</button>
+        </div>
+      </div>
+    </section>
 
-    function runWhile() {
-      let i = 1, text = "";
-      while (i <= 3) {
-        text += "Iteracja " + i + "\n";
-        i++;
-      }
-      document.getElementById("whileOutput").innerText = text;
-    }
+    <!-- right column - terminal -->
+    <section class="card">
+      <h2>Terminal — wynik</h2>
+      <div id="terminal" class="terminal">
+        <div class="log-line meta">Witaj — kliknij przyciski, aby uruchomić przykłady.</div>
+      </div>
+    </section>
+  </main>
 
-    function runDoWhile() {
-      let i = 1, text = "";
-      do {
-        text += "Iteracja " + i + "\n";
-        i++;
-      } while (i <= 3);
-      document.getElementById("doWhileOutput").innerText = text;
-    }
+  <footer>filibara · JS playground · instrukcje sterujące</footer>
 
-    function runTernary() {
-      let score = 75;
-      let result = (score >= 50) ? "Zaliczone!" : "Niezaliczone!";
-      document.getElementById("ternaryOutput").innerText = result;
-    }
+<script>
+  const term = document.getElementById('terminal');
+  function appendLine(html, cls='log-line'){ const d=document.createElement('div'); d.className=cls; d.innerHTML=html; term.appendChild(d); term.scrollTop=term.scrollHeight; }
+  function clearTerminal(){ term.innerHTML='<div class="log-line meta">Terminal wyczyszczony.</div>'; }
+  function printCode(title, snippet){ appendLine(`<div class="meta">Snippet: <strong>${title}</strong></div><pre class="snip">${snippet}</pre>`); }
 
-    // --- Pokazywanie kodu ---
-    function showCode(type) {
-      let code = "";
-      switch(type) {
-        case "if":
-          code = `if (warunek) {
-  // kod
-} else {
-  // kod inny
-}
-
-if (warunek) // bez klamerek`; break;
-
-        case "switch":
-          code = `switch (zmienna) {
-  case 1: // kod
-    break;
-  case 2: // kod
-    break;
-  default: // kod domyślny
-}`; break;
-
-        case "for":
-          code = `for (let i = 0; i < n; i++) {
-  // kod
-}`; break;
-
-        case "while":
-          code = `while (warunek) {
-  // kod
-}`; break;
-
-        case "dowhile":
-          code = `do {
-  // kod
-} while (warunek);`; break;
-
-        case "ternary":
-          code = `warunek ? wartosc1 : wartosc2;`; break;
-      }
-      document.getElementById(type + "Output").innerText = code;
-    }
-  </script>
+  // --- przykłady ---
+  function runIf(){
+    clearTerminal();
+    let age=18;
+    if(age>=18) appendLine("Masz 18 lat lub więcej");
+    if(age<18) appendLine("Niepełnoletni");
+    else appendLine("Pełnoletni");
+    if(age===18) appendLine("Masz dokładnie 18 lat");
+  }
+  function runSwitch(){
+    clearTerminal();
+    let day=2; let result;
+    switch(day){case 1:result="Poniedziałek";break;case 2:result="Wtorek";break;case 3:result="Środa";break;default:result="Inny dzień";}
+    appendLine("Dzień: "+result);
+  }
+  function runFor(){
+    clearTerminal();
+    for(let i=1;i<=5;i++){ appendLine("Liczba: "+i); }
+  }
+  function runWhile(){
+    clearTerminal();
+    let i=1; while(i<=3){ appendLine("Iteracja "+i); i++; }
+  }
+  function runDoWhile(){
+    clearTerminal();
+    let i=1; do{ appendLine("Iteracja "+i); i++; } while(i<=3);
+  }
+  function runTernary(){
+    clearTerminal();
+    let score=75;
+    appendLine(score>=50?"Zaliczone!":"Niezaliczone!");
+  }
+</script>
 </body>
 </html>
-
