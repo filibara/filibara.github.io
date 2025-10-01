@@ -6,50 +6,49 @@
   <title>Instrukcje sterujące w JS</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f3fdf3;
-      color: #1b5e20;
+      font-family: Consolas, monospace;
+      background-color: #111;
+      color: #0f0;
       margin: 0;
       padding: 20px;
     }
     h1 {
       text-align: center;
-      background-color: #2e7d32;
-      color: white;
-      padding: 15px;
-      border-radius: 8px;
+      color: #ff0;
+      margin-bottom: 20px;
     }
     .block {
-      background-color: #a5d6a7;
+      background-color: #222;
       padding: 20px;
       margin: 20px 0;
       border-radius: 10px;
+      border: 1px solid #0f0;
+    }
+    h2 {
+      color: #0af;
     }
     button {
-      background-color: #2e7d32;
-      color: white;
+      background-color: #0f0;
+      color: #111;
       border: none;
       padding: 8px 15px;
       border-radius: 5px;
       cursor: pointer;
-      margin-top: 10px;
+      margin: 5px 5px 10px 0;
+      font-weight: bold;
     }
     button:hover {
-      background-color: #1b5e20;
+      background-color: #ff0;
+      color: #000;
     }
-    .result {
-      margin-top: 10px;
-      font-weight: bold;
-      color: #004d00;
-    }
-    .console-box {
-      background-color: #1b5e20;
-      color: #f3fdf3;
+    .terminal {
+      background-color: #000;
+      color: #0f0;
       padding: 10px;
-      border-radius: 5px;
-      margin-top: 15px;
-      font-family: "Courier New", monospace;
+      border-radius: 6px;
+      margin-top: 10px;
       white-space: pre-wrap;
+      min-height: 40px;
     }
   </style>
 </head>
@@ -61,110 +60,68 @@
     <h2>Instrukcja <code>if</code></h2>
     <p>Trzy warianty użycia instrukcji <code>if</code>:</p>
     <ul>
-      <li><b>Zwykły if</b></li>
-      <li><b>if...else</b></li>
-      <li><b>if bez klamerek</b></li>
+      <li>Zwykły <code>if</code></li>
+      <li><code>if...else</code></li>
+      <li><code>if</code> bez klamerek</li>
     </ul>
-    <button onclick="testIf()">Sprawdź przykład</button>
-    <div class="result" id="ifResult"></div>
-    <div class="console-box">
-if (warunek) {
-    // kod gdy warunek jest prawdziwy
-} else {
-    // kod gdy warunek jest fałszywy
-}
-
-if (warunek) // kod bez klamerek
-    </div>
+    <button onclick="runIf()">Uruchom przykład</button>
+    <button onclick="showCode('if')">Pokaż kod</button>
+    <div class="terminal" id="ifOutput"></div>
   </div>
 
   <!-- SWITCH -->
   <div class="block">
     <h2>Instrukcja <code>switch</code></h2>
-    <p>Pozwala porównywać jedną wartość do wielu przypadków.</p>
-    <button onclick="testSwitch()">Sprawdź przykład</button>
-    <div class="result" id="switchResult"></div>
-    <div class="console-box">
-switch (zmienna) {
-  case 1:
-    // kod
-    break;
-  case 2:
-    // kod
-    break;
-  default:
-    // kod domyślny
-}
-    </div>
+    <button onclick="runSwitch()">Uruchom przykład</button>
+    <button onclick="showCode('switch')">Pokaż kod</button>
+    <div class="terminal" id="switchOutput"></div>
   </div>
 
   <!-- FOR -->
   <div class="block">
     <h2>Pętla <code>for</code></h2>
-    <p>Pętla używana do wykonywania kodu określoną liczbę razy.</p>
-    <button onclick="testFor()">Sprawdź przykład</button>
-    <div class="result" id="forResult"></div>
-    <div class="console-box">
-for (let i = 0; i &lt; liczba; i++) {
-  // kod wykonywany w pętli
-}
-    </div>
+    <button onclick="runFor()">Uruchom przykład</button>
+    <button onclick="showCode('for')">Pokaż kod</button>
+    <div class="terminal" id="forOutput"></div>
   </div>
 
   <!-- WHILE -->
   <div class="block">
     <h2>Pętla <code>while</code></h2>
-    <p>Wykonuje kod dopóki warunek jest prawdziwy.</p>
-    <button onclick="testWhile()">Sprawdź przykład</button>
-    <div class="result" id="whileResult"></div>
-    <div class="console-box">
-while (warunek) {
-  // kod wykonywany dopóki warunek true
-}
-    </div>
+    <button onclick="runWhile()">Uruchom przykład</button>
+    <button onclick="showCode('while')">Pokaż kod</button>
+    <div class="terminal" id="whileOutput"></div>
   </div>
 
   <!-- DO WHILE -->
   <div class="block">
     <h2>Pętla <code>do...while</code></h2>
-    <p>Pętla zawsze wykona się przynajmniej raz, zanim sprawdzi warunek.</p>
-    <button onclick="testDoWhile()">Sprawdź przykład</button>
-    <div class="result" id="doWhileResult"></div>
-    <div class="console-box">
-do {
-  // kod wykonywany raz na start
-} while (warunek);
-    </div>
+    <button onclick="runDoWhile()">Uruchom przykład</button>
+    <button onclick="showCode('dowhile')">Pokaż kod</button>
+    <div class="terminal" id="doWhileOutput"></div>
   </div>
 
   <!-- TERNARY -->
   <div class="block">
-    <h2>Instrukcja przetwarzania warunkowego (<code>? :</code>)</h2>
-    <p>Skrócona forma <code>if...else</code>.</p>
-    <button onclick="testTernary()">Sprawdź przykład</button>
-    <div class="result" id="ternaryResult"></div>
-    <div class="console-box">
-warunek ? wartość_jeśli_true : wartość_jeśli_false;
-    </div>
+    <h2>Instrukcja warunkowa (<code>? :</code>)</h2>
+    <button onclick="runTernary()">Uruchom przykład</button>
+    <button onclick="showCode('ternary')">Pokaż kod</button>
+    <div class="terminal" id="ternaryOutput"></div>
   </div>
 
   <script>
-    function testIf() {
+    // --- Funkcje uruchamiające przykłady ---
+    function runIf() {
       let age = 18;
       let result = "";
-      if (age >= 18) {
-        result += "Masz 18 lat lub więcej. <br>";
-      }
-      if (age < 18) {
-        result += "Niepełnoletni.<br>";
-      } else {
-        result += "Pełnoletni.<br>";
-      }
-      if (age === 18) result += "Masz dokładnie 18 lat.<br>";
-      document.getElementById("ifResult").innerHTML = result;
+      if (age >= 18) result += "Masz 18 lat lub więcej.\n";
+      if (age < 18) result += "Niepełnoletni.\n";
+      else result += "Pełnoletni.\n";
+      if (age === 18) result += "Masz dokładnie 18 lat.\n";
+      document.getElementById("ifOutput").innerText = result;
     }
 
-    function testSwitch() {
+    function runSwitch() {
       let day = 2;
       let result = "";
       switch(day) {
@@ -173,41 +130,82 @@ warunek ? wartość_jeśli_true : wartość_jeśli_false;
         case 3: result = "Środa"; break;
         default: result = "Inny dzień"; break;
       }
-      document.getElementById("switchResult").innerHTML = "Dzień: " + result;
+      document.getElementById("switchOutput").innerText = "Dzień: " + result;
     }
 
-    function testFor() {
+    function runFor() {
       let text = "";
       for (let i = 1; i <= 5; i++) {
-        text += "Liczba: " + i + "<br>";
+        text += "Liczba: " + i + "\n";
       }
-      document.getElementById("forResult").innerHTML = text;
+      document.getElementById("forOutput").innerText = text;
     }
 
-    function testWhile() {
-      let i = 1;
-      let text = "";
+    function runWhile() {
+      let i = 1, text = "";
       while (i <= 3) {
-        text += "Iteracja " + i + "<br>";
+        text += "Iteracja " + i + "\n";
         i++;
       }
-      document.getElementById("whileResult").innerHTML = text;
+      document.getElementById("whileOutput").innerText = text;
     }
 
-    function testDoWhile() {
-      let i = 1;
-      let text = "";
+    function runDoWhile() {
+      let i = 1, text = "";
       do {
-        text += "Iteracja " + i + "<br>";
+        text += "Iteracja " + i + "\n";
         i++;
       } while (i <= 3);
-      document.getElementById("doWhileResult").innerHTML = text;
+      document.getElementById("doWhileOutput").innerText = text;
     }
 
-    function testTernary() {
+    function runTernary() {
       let score = 75;
       let result = (score >= 50) ? "Zaliczone!" : "Niezaliczone!";
-      document.getElementById("ternaryResult").innerHTML = result;
+      document.getElementById("ternaryOutput").innerText = result;
+    }
+
+    // --- Pokazywanie kodu ---
+    function showCode(type) {
+      let code = "";
+      switch(type) {
+        case "if":
+          code = `if (warunek) {
+  // kod
+} else {
+  // kod inny
+}
+
+if (warunek) // bez klamerek`; break;
+
+        case "switch":
+          code = `switch (zmienna) {
+  case 1: // kod
+    break;
+  case 2: // kod
+    break;
+  default: // kod domyślny
+}`; break;
+
+        case "for":
+          code = `for (let i = 0; i < n; i++) {
+  // kod
+}`; break;
+
+        case "while":
+          code = `while (warunek) {
+  // kod
+}`; break;
+
+        case "dowhile":
+          code = `do {
+  // kod
+} while (warunek);`; break;
+
+        case "ternary":
+          code = `warunek ? wartosc1 : wartosc2;`; break;
+      }
+      document.getElementById(type + "Output").innerText = code;
     }
   </script>
 </body>
