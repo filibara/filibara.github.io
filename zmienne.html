@@ -1,19 +1,299 @@
-<!DOCTYPE HTML>
-<HTML lang="pl">
-  <head>
-    <meta charset="utf-8">
-  </head>
-  <body>
-  <a href="const.html"  class="tile">
-      <h3>Const</h3></a> 
 
-    <a href="var.html"  class="tile">
-      <h3>Var</h3></a> 
-
-     <a href="let.html"  class="tile">
-      <h3>Let</h3></a> 
-
-    <a href="number.html">Kon(tro)wersja</a>
-    
-  </body>
 </HTML>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Zmienne i konwersja — Playground</title>
+<style>
+  :root {
+    --bg: #07120b;
+    --panel: #082713;
+    --card: #0b2b14;
+    --accent: #1db954;
+    --muted: #8fb99a;
+    --text: #e6f8ea;
+    --term-bg: #04120a;
+    --term-border: rgba(29,185,84,0.12);
+  }
+  * { box-sizing: border-box; }
+  body{
+    margin:0;
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg,var(--bg),#05130a 60%);
+    color:var(--text);
+    padding:20px;
+  }
+  header { display:flex; align-items:center; gap:18px; margin-bottom:18px; }
+  h1 { margin:0; color:var(--accent); font-size:1.4rem; }
+  p.lead { margin:0; color:var(--muted); }
+
+  .layout {
+    display:grid;
+    grid-template-columns: 460px 1fr;
+    gap:18px;
+    align-items:start;
+  }
+
+  .card {
+    background: linear-gradient(180deg,var(--panel),var(--card));
+    border-radius:12px;
+    padding:14px;
+    border:1px solid var(--term-border);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  }
+
+  .card h2 { margin:0 0 8px; color:var(--accent); font-size:1.05rem; }
+  .note { color:var(--muted); font-size:0.92rem; margin-bottom:10px; }
+
+  .examples { display:flex; flex-direction:column; gap:12px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  button {
+    background:var(--accent);
+    color:#04220f;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  button.ghost {
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  .small { font-size:0.85rem; color:var(--muted); }
+
+  /* terminal */
+  .terminal {
+    background: linear-gradient(180deg, var(--term-bg), #02110a);
+    border-radius:10px;
+    padding:12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    color: #bff3c8;
+    min-height:420px;
+    max-height:720px;
+    overflow:auto;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .log-line { padding:8px; border-radius:6px; margin-bottom:10px; background: rgba(255,255,255,0.01); }
+  .ok { color: #bff3c8; font-weight:600; }
+  .bad { color: #ff9b9b; font-weight:600; }
+  .meta { color: var(--muted); font-size:0.9rem; margin-bottom:6px; }
+  pre.snip {
+    background: rgba(0,0,0,0.2);
+    padding:10px;
+    border-radius:6px;
+    overflow:auto;
+    font-size:0.9rem;
+  }
+  .section-title { color:var(--muted); font-size:0.95rem; margin-bottom:6px; }
+
+  footer { margin-top:18px; color:var(--muted); text-align:center; font-size:0.9rem; }
+  @media (max-width:980px){
+    .layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Zmienne i konwersja — Playground</h1>
+      <p class="lead">const • var • let • Number() — przykłady z terminalem</p>
+    </div>
+    <div style="margin-left:auto" class="small">Kliknij "Uruchom" lub "Pokaż kod". Wynik pojawi się w terminalu.</div>
+  </header>
+
+  <main class="layout">
+    <!-- left column - examples -->
+    <section class="card" aria-labelledby="controls-title">
+      <h2 id="controls-title">Przykłady: zmienne & konwersja</h2>
+      <p class="note">Każdy przykład ma przyciski: <strong>Uruchom</strong> (pokazuje działanie) i <strong>Pokaż kod</strong> (wypisuje snippet w terminalu).</p>
+
+      <div class="examples">
+
+        <!-- const -->
+        <div>
+          <div class="section-title">const — stała</div>
+          <div class="small meta">Stała nie może zostać ponownie przypisana ani redeklarowana.</div>
+          <pre class="snip">// Przykład:
+const pi = 3.14159;
+// pi = 3.15 // → Błąd</pre>
+          <div class="row">
+            <button onclick="runConst()">Uruchom const</button>
+            <button class="ghost" onclick="printCode('const', constSnippet)">Pokaż kod</button>
+          </div>
+        </div>
+
+        <!-- var -->
+        <div>
+          <div class="section-title" style="margin-top:10px">var — funkcjonalny zasięg</div>
+          <div class="small meta">Można redeklarować; zasięg funkcji, a nie bloku.</div>
+          <pre class="snip">// Przykład:
+var message = "Hello, world!";
+var message = "Hello again!"; // dozwolone</pre>
+          <div class="row">
+            <button onclick="runVar()">Uruchom var</button>
+            <button class="ghost" onclick="printCode('var', varSnippet)">Pokaż kod</button>
+          </div>
+        </div>
+
+        <!-- let -->
+        <div>
+          <div class="section-title" style="margin-top:10px">let — zasięg blokowy</div>
+          <div class="small meta">Można zmieniać wartość, ale nie redeklarować w tym samym zasięgu.</div>
+          <pre class="snip">// Przykład:
+let counter = 0;
+counter++; // OK
+// let counter = 0; // Błąd przy redeklaracji w tym samym bloku</pre>
+          <div class="row">
+            <button onclick="runLet()">Uruchom let</button>
+            <button class="ghost" onclick="printCode('let', letSnippet)">Pokaż kod</button>
+          </div>
+        </div>
+
+        <!-- Number() -->
+        <div>
+          <div class="section-title" style="margin-top:10px">Number(value) — konwersja</div>
+          <div class="small meta">Konwertuje wartość na liczbę; cały string musi być prawidłowy (poza spacjami).</div>
+          <pre class="snip">// Przykład:
+Number(" 123 ")  // 123
+Number("10px")   // NaN</pre>
+          <div class="row">
+            <button onclick="runNumberConv()">Uruchom Number()</button>
+            <button class="ghost" onclick="printCode('Number', numberSnippet)">Pokaż kod</button>
+          </div>
+        </div>
+
+        <div style="margin-top:14px" class="small">
+          <button class="ghost" onclick="clearTerminal()">Wyczyść terminal</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- right column - terminal -->
+    <section class="card" aria-labelledby="terminal-title">
+      <h2 id="terminal-title">Terminal — wynik</h2>
+      <div id="terminal" class="terminal" role="log" aria-live="polite">
+        <div class="log-line meta">Witaj — kliknij przyciski, aby uruchomić przykłady. Terminal pokazuje wynik oraz krótkie objaśnienia.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>filibara · JS playground</footer>
+
+<script>
+  // snippets
+  const constSnippet = `// const przykład
+const pi = 3.14159;
+console.log("Stała pi =", pi);
+// pi = 3.15 // → TypeError jeśli odkomentujesz`;
+  const varSnippet = `// var przykład
+var message = "Hello, world!";
+console.log("Pierwsza deklaracja:", message);
+var message = "Hello again!";
+console.log("Redeclaracja var:", message);`;
+  const letSnippet = `// let przykład
+let counter = 0;
+console.log("Start counter =", counter);
+counter++;
+console.log("Po zwiększeniu counter =", counter);
+// let counter = 0; // redeklaracja w tym samym bloku -> BŁĄD`;
+  const numberSnippet = `// Number() przykład
+console.log(Number(" 123 "));   // 123
+console.log(Number("12e2"));    // 1200
+console.log(Number("10px"));    // NaN`;
+
+  // terminal helper
+  const term = document.getElementById('terminal');
+  function appendLine(html, cls='log-line') {
+    const div = document.createElement('div');
+    div.className = cls;
+    div.innerHTML = html;
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+  }
+  function clearTerminal() {
+    term.innerHTML = '<div class="log-line meta">Terminal wyczyszczony.</div>';
+  }
+  function printCode(title, snippet) {
+    appendLine(`<div class="meta">Snippet: <strong>${title}</strong></div>`);
+    appendLine(`<pre style="margin-top:8px; background:rgba(255,255,255,0.02); padding:8px; border-radius:6px;">${snippet}</pre>`);
+  }
+
+  // run examples
+
+  function runConst() {
+    clearTerminal();
+    appendLine('<div class="meta">const — przykład</div>');
+    try {
+      const pi = 3.14159;
+      appendLine(`<div>const pi = <span class="ok">${pi}</span></div>`);
+      // pokażemy, że próba przypisania by się nie powiodła (zakomentowane)
+      appendLine(`<div class="meta">Uwaga: przypisanie <code>pi = 3.15</code> spowodowałoby błąd (nie wykonujemy).</div>`);
+      console.log('const pi =', pi);
+    } catch (err) {
+      appendLine(`<div class="bad">Błąd: ${err.message}</div>`);
+    }
+  }
+
+  function runVar() {
+    clearTerminal();
+    appendLine('<div class="meta">var — przykład</div>');
+    try {
+      var message = "Hello, world!";
+      appendLine(`<div>Pierwsza deklaracja: <span class="ok">${message}</span></div>`);
+      // redeklaracja var
+      var message = "Hello again!";
+      appendLine(`<div>Po redeklaracji: <span class="ok">${message}</span></div>`);
+      appendLine(`<div class="meta">var pozwala na redeklarację zmiennej w tym samym zakresie.</div>`);
+      console.log('var message redeclare:', message);
+    } catch (err) {
+      appendLine(`<div class="bad">Błąd: ${err.message}</div>`);
+    }
+  }
+
+  function runLet() {
+    clearTerminal();
+    appendLine('<div class="meta">let — przykład</div>');
+    try {
+      let counter = 0;
+      appendLine(`<div>Start counter: <span class="ok">${counter}</span></div>`);
+      counter++;
+      appendLine(`<div>Po counter++: <span class="ok">${counter}</span></div>`);
+      appendLine(`<div class="meta">let ma zasięg blokowy i nie pozwala na redeklarację w tym samym bloku.</div>`);
+      console.log('let counter ->', counter);
+    } catch (err) {
+      appendLine(`<div class="bad">Błąd: ${err.message}</div>`);
+    }
+  }
+
+  function runNumberConv() {
+    clearTerminal();
+    appendLine('<div class="meta">Number() — przykład konwersji</div>');
+    try {
+      const a = Number(" 123 ");
+      const b = Number("12e2");
+      const c = Number("10px");
+      appendLine(`<div>Number(" 123 ") => <span class="ok">${a}</span></div>`);
+      appendLine(`<div>Number("12e2") => <span class="ok">${b}</span> (notacja wykładnicza)</div>`);
+      appendLine(`<div>Number("10px") => <span class="${isNaN(c)?'bad':'ok'}">${c}</span> (niepoprawny format → NaN)</div>`);
+      appendLine('<div class="meta">Uwaga: Number() wymaga, aby cały string był liczbą (oprócz spacji).</div>');
+      console.log('Number conversion:', {a,b,c});
+    } catch (err) {
+      appendLine(`<div class="bad">Błąd: ${err.message}</div>`);
+    }
+  }
+
+  // skróty klawiszowe (opcjonalne)
+  document.addEventListener('keydown', (e) => {
+    if (e.altKey && e.key === '1') runConst();
+    if (e.altKey && e.key === '2') runVar();
+    if (e.altKey && e.key === '3') runLet();
+    if (e.altKey && e.key === '4') runNumberConv();
+  });
+
+</script>
+</body>
+</html>
