@@ -96,8 +96,8 @@
 <body>
   <header>
     <div>
-      <h1>Funkcje w JS</h1>
-      <p class="lead">parseInt • parseFloat • Number • isNaN • safeParse </p>
+      <h1>JS Functions Playground — PL</h1>
+      <p class="lead">parseInt • parseFloat • Number • isNaN • safeParse (przykłady po polsku)</p>
     </div>
     <div style="margin-left:auto" class="small">Kliknij przyciski — wyniki pojawią się w terminalu</div>
   </header>
@@ -119,7 +119,7 @@ parseInt("08") → 8 (bezpieczniej użyć radix 10)
 parseInt("10px") → 10</pre>
           <div class="row">
             <button onclick="runParseInt()">Uruchom parseInt</button>
-            <button class="ghost" onclick="printCode('parseInt', `parseInt(\"123\") // 123\nparseInt(\"08\", 10) // 8\nparseInt(\"10px\") // 10`)">Pokaż kod</button>
+            <button class="ghost" onclick="printCode('parseInt', parseIntSnippet)">Pokaż kod</button>
           </div>
         </div>
 
@@ -132,7 +132,7 @@ parseFloat("3.14abc") → 3.14
 parseFloat("abc3.14") → NaN</pre>
           <div class="row">
             <button onclick="runParseFloat()">Uruchom parseFloat</button>
-            <button class="ghost" onclick="printCode('parseFloat', `parseFloat(\"45.67\") // 45.67\nparseFloat(\"3.14abc\") // 3.14`)">Pokaż kod</button>
+            <button class="ghost" onclick="printCode('parseFloat', parseFloatSnippet)">Pokaż kod</button>
           </div>
         </div>
 
@@ -145,7 +145,7 @@ Number("12e2") → 1200
 Number("10px") → NaN</pre>
           <div class="row">
             <button onclick="runNumber()">Uruchom Number()</button>
-            <button class="ghost" onclick="printCode('Number', `Number(\" 123 \") // 123\nNumber(\"12e2\") // 1200\nNumber(\"10px\") // NaN`)">Pokaż kod</button>
+            <button class="ghost" onclick="printCode('Number', numberSnippet)">Pokaż kod</button>
           </div>
         </div>
 
@@ -158,7 +158,7 @@ isNaN("123") → false
 Number.isNaN(NaN) → true</pre>
           <div class="row">
             <button onclick="runIsNaN()">Uruchom isNaN</button>
-            <button class="ghost" onclick="printCode('isNaN', `isNaN(\"abc\") // true\nisNaN(\"123\") // false\nNumber.isNaN(NaN) // true`)">Pokaż kod</button>
+            <button class="ghost" onclick="printCode('isNaN', isNaNSnippet)">Pokaż kod</button>
           </div>
         </div>
 
@@ -171,7 +171,7 @@ safeParse("12px") → { method: "parseFloat", value: 12 }
 safeParse("abc") → { method: "none", value: NaN }</pre>
           <div class="row">
             <button onclick="runSafeParse()">Uruchom safeParse</button>
-            <button class="ghost" onclick="printCode('safeParse', `// próbuje Number(), potem parseFloat\nsafeParse(\" 12.34 \")\nsafeParse(\"12px\")\nsafeParse(\"abc\")`)">Pokaż kod</button>
+            <button class="ghost" onclick="printCode('safeParse', safeParseSnippet)">Pokaż kod</button>
           </div>
         </div>
 
@@ -193,6 +193,37 @@ safeParse("abc") → { method: "none", value: NaN }</pre>
   <footer>filibara · JS playground · przykłady na lekcje</footer>
 
 <script>
+  // snippety jako zmienne (ułatwia ponowne użycie)
+  const parseIntSnippet = `// parseInt: parsuje liczbę całkowitą z tekstu
+parseInt("123")         // 123
+parseInt("08", 10)      // 8  (bezpiecznie użyć radix = 10)
+parseInt("10px")        // 10 (parsuje do pierwszego nie-cyfrowego znaku)`;
+
+  const parseFloatSnippet = `// parseFloat: parsuje liczbę zmiennoprzecinkową z początku tekstu
+parseFloat("45.67")     // 45.67
+parseFloat("3.14abc")   // 3.14
+parseFloat("abc3.14")   // NaN (brak liczby na początku)`;
+
+  const numberSnippet = `// Number(): konwertuje cały string (po trim) na liczbę
+Number(" 123 ")         // 123
+Number("12e2")          // 1200
+Number("10px")          // NaN (niepoprawny format)`;
+
+  const isNaNSnippet = `// isNaN() i Number.isNaN()
+isNaN("abc")            // true  (isNaN konwertuje argument)
+isNaN("123")            // false
+Number.isNaN(NaN)       // true  (zalecane do ścisłego sprawdzania)`;
+
+  const safeParseSnippet = `// safeParse: najpierw Number(), potem parseFloat()
+function safeParse(val) {
+  const trimmed = (typeof val === 'string') ? val.trim() : val;
+  const n = Number(trimmed);
+  if (!Number.isNaN(n)) return { method: 'Number', value: n };
+  const f = parseFloat(trimmed);
+  if (!Number.isNaN(f)) return { method: 'parseFloat', value: f };
+  return { method: 'none', value: NaN };
+}`;
+
   // utility: append to terminal
   const term = document.getElementById('terminal');
   function appendLine(html, cls='log-line') {
@@ -205,8 +236,11 @@ safeParse("abc") → { method: "none", value: NaN }</pre>
   function clearTerminal() {
     term.innerHTML = '<div class="log-line meta">Terminal wyczyszczony.</div>';
   }
+
+  // printCode: wyświetla snippet (działa teraz z przyciskami)
   function printCode(title, snippet) {
-    appendLine(`<div class="meta">Snippet: <strong>${title}</strong></div><pre style="margin-top:8px; background:rgba(255,255,255,0.02); padding:8px; border-radius:6px;">${snippet}</pre>`);
+    appendLine(`<div class="meta">Snippet: <strong>${title}</strong></div>`);
+    appendLine(`<pre style="margin-top:8px; background:rgba(255,255,255,0.02); padding:8px; border-radius:6px;">${snippet}</pre>`);
   }
 
   // Przykłady implementacji (PL)
@@ -269,7 +303,6 @@ safeParse("abc") → { method: "none", value: NaN }</pre>
 
   // custom safeParse
   function safeParse(val) {
-    // najpierw Number (ścisłe), potem parseFloat (luźniejsze), w przeciwnym razie NaN
     const trimmed = (typeof val === 'string') ? val.trim() : val;
     const n = Number(trimmed);
     if (!Number.isNaN(n)) return { method: 'Number', value: n };
@@ -303,5 +336,6 @@ safeParse("abc") → { method: "none", value: NaN }</pre>
 </script>
 </body>
 </html>
+
 
 
