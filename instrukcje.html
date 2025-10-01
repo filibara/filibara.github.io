@@ -6,49 +6,75 @@
   <title>Instrukcje sterujące w JS</title>
   <style>
     body {
-      font-family: Consolas, monospace;
-      background-color: #111;
-      color: #0f0;
+      font-family: "Consolas", monospace;
+      background-color: #0a0a0a;
+      color: #00ff99;
       margin: 0;
       padding: 20px;
     }
     h1 {
       text-align: center;
-      color: #ff0;
-      margin-bottom: 20px;
+      background: linear-gradient(90deg, #00ff99, #00ccff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2.2em;
+      margin-bottom: 25px;
+      text-shadow: 0 0 10px #00ff99;
     }
     .block {
-      background-color: #222;
+      background: #111;
       padding: 20px;
-      margin: 20px 0;
-      border-radius: 10px;
-      border: 1px solid #0f0;
+      margin: 20px auto;
+      border-radius: 12px;
+      border: 1px solid #00ff99;
+      box-shadow: 0 0 10px rgba(0,255,150,0.3);
+      max-width: 800px;
     }
     h2 {
-      color: #0af;
+      color: #00ccff;
+      margin-bottom: 10px;
+    }
+    p, ul {
+      color: #b5f5d5;
     }
     button {
-      background-color: #0f0;
+      background: #00ff99;
       color: #111;
       border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
+      padding: 10px 18px;
+      border-radius: 6px;
       cursor: pointer;
-      margin: 5px 5px 10px 0;
+      margin: 5px 8px 12px 0;
       font-weight: bold;
+      font-size: 0.9em;
+      transition: 0.2s;
+      box-shadow: 0 0 8px #00ff99;
     }
     button:hover {
-      background-color: #ff0;
-      color: #000;
+      background: #00ccff;
+      box-shadow: 0 0 15px #00ccff;
     }
     .terminal {
       background-color: #000;
-      color: #0f0;
-      padding: 10px;
+      color: #00ff99;
+      padding: 12px;
       border-radius: 6px;
       margin-top: 10px;
       white-space: pre-wrap;
       min-height: 40px;
+      font-family: "Courier New", monospace;
+      position: relative;
+    }
+    /* migający kursor w terminalu */
+    .terminal::after {
+      content: "█";
+      position: absolute;
+      right: 10px;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
   </style>
 </head>
@@ -210,3 +236,4 @@ if (warunek) // bez klamerek`; break;
   </script>
 </body>
 </html>
+
