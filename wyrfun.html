@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Funkcje — wyrażenia funkcyjne i custom functions</title>
+<style>
+  :root {
+    --bg: #07120b;
+    --panel: #082713;
+    --card: #0b2b14;
+    --accent: #1db954;
+    --muted: #8fb99a;
+    --text: #e6f8ea;
+    --term-bg: #04120a;
+    --term-border: rgba(29,185,84,0.15);
+  }
+  * { box-sizing: border-box; }
+  body{
+    margin:0;
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg,var(--bg),#05130a 60%);
+    color:var(--text);
+    padding:20px;
+  }
+  header { display:flex; align-items:center; gap:18px; margin-bottom:18px; }
+  h1 { margin:0; color:var(--accent); font-size:1.4rem; }
+  p.lead { margin:0; color:var(--muted); }
+
+  .layout {
+    display:grid;
+    grid-template-columns: 420px 1fr;
+    gap:18px;
+    align-items:start;
+  }
+
+  .card {
+    background: linear-gradient(180deg,var(--panel),var(--card));
+    border-radius:12px;
+    padding:14px;
+    border:1px solid var(--term-border);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  }
+
+  .card h2 { margin:0 0 8px; color:var(--accent); font-size:1.05rem; }
+  .note { color:var(--muted); font-size:0.92rem; margin-bottom:10px; }
+
+  .examples { display:flex; flex-direction:column; gap:12px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  button {
+    background:var(--accent);
+    color:#04220f;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  button.ghost {
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  .small { font-size:0.85rem; color:var(--muted); }
+
+  /* terminal */
+  .terminal {
+    background: linear-gradient(180deg, var(--term-bg), #02110a);
+    border-radius:10px;
+    padding:12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    color: #bff3c8;
+    min-height:220px;
+    max-height:520px;
+    overflow:auto;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .log-line { padding:6px 8px; border-radius:6px; margin-bottom:8px; background: rgba(255,255,255,0.01); }
+  .ok { color: #bff3c8; }
+  .bad { color: #ff9b9b; }
+  .meta { color: var(--muted); font-size:0.85rem; }
+  pre.snip {
+    background: rgba(0,0,0,0.2);
+    padding:10px;
+    border-radius:6px;
+    overflow:auto;
+    font-size:0.9rem;
+  }
+
+  footer { margin-top:18px; color:var(--muted); text-align:center; font-size:0.9rem; }
+  @media (max-width:980px){
+    .layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Funkcje w JS — expression & custom</h1>
+      <p class="lead">Wyrażenie funkcyjne (function expression) • Przykład własnej funkcji</p>
+    </div>
+    <div style="margin-left:auto" class="small">Kliknij przyciski — wynik pojawi się w terminalu</div>
+  </header>
+
+  <main class="layout">
+    <!-- left column -->
+    <section class="card" aria-labelledby="controls-title">
+      <h2 id="controls-title">Przykłady funkcji</h2>
+      <p class="note">Dwa przykłady: 1) wyrażenie funkcyjne (function expression), 2) własna funkcja tworząca profil użytkownika.</p>
+
+      <div class="examples">
+        <!-- function expression -->
+        <div>
+          <h3 style="margin:6px 0 6px;color:var(--accent)">Wyrażenie funkcyjne (function expression)</h3>
+          <div class="small meta">Przypisanie funkcji do zmiennej. Można użyć anonimowej funkcji lub arrow function.</div>
+          <pre class="snip">// przykład:
+const add = function(a, b) {
+  return a + b;
+};
+add(2,3) // 5</pre>
+          <div class="row">
+            <button onclick="runFuncExpr()">Uruchom function expression</button>
+            <button class="ghost" onclick="printCode('function expression', funcExprSnippet)">Pokaż kod</button>
+          </div>
+        </div>
+
+        <!-- custom function -->
+        <div>
+          <h3 style="margin-top:10px;color:var(--accent)">Custom function — createProfile</h3>
+          <div class="small meta">Funkcja tworzy obiekt profilu i formatuje wynik jako string HTML (przydatne przy renderowaniu).</div>
+          <pre class="snip">// przykład:
+createProfile('Ala', 'Kowalska', 23)
+// zwraca obiekt i skrócony opis</pre>
+          <div class="row">
+            <button onclick="runCreateProfile()">Uruchom createProfile</button>
+            <button class="ghost" onclick="printCode('createProfile', createProfileSnippet)">Pokaż kod</button>
+          </div>
+        </div>
+
+        <div style="margin-top:14px" class="small">
+          <button class="ghost" onclick="clearTerminal()">Wyczyść terminal</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- right column - terminal -->
+    <section class="card" aria-labelledby="terminal-title">
+      <h2 id="terminal-title">Terminal — wynik</h2>
+      <div id="terminal" class="terminal" role="log" aria-live="polite">
+        <div class="log-line meta">Witaj — kliknij przyciski, aby uruchomić przykłady. Terminal pokazuje wynik i dodatkowe info.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>filibara · JS playground · funkcje</footer>
+
+<script>
+  // snippets
+  const funcExprSnippet = `// function expression (anonimowa funkcja przypisana do zmiennej)
+const add = function(a, b) {
+  return a + b;
+};
+console.log(add(2,3)); // 5
+
+// arrow function (również wyrażenie):
+const mul = (a, b) => a * b;`;
+
+  const createProfileSnippet = `// createProfile - przykładowa custom function
+function createProfile(firstName, lastName, age) {
+  const username = firstName.toLowerCase() + '.' + lastName.toLowerCase();
+  const profile = { firstName, lastName, age, username, created: new Date() };
+  const summary = \`\${firstName} \${lastName} (\${age}) — @\${username}\`;
+  return { profile, summary };
+}
+
+const result = createProfile('Ala','Kowalska',23);
+console.log(result.summary);`;
+
+  // terminal helpers
+  const term = document.getElementById('terminal');
+  function appendLine(html, cls='log-line') {
+    const d = document.createElement('div');
+    d.className = cls;
+    d.innerHTML = html;
+    term.appendChild(d);
+    term.scrollTop = term.scrollHeight;
+  }
+  function clearTerminal() {
+    term.innerHTML = '<div class="log-line meta">Terminal wyczyszczony.</div>';
+  }
+  function printCode(title, snippet) {
+    appendLine(`<div class="meta">Snippet: <strong>${title}</strong></div>`);
+    appendLine(`<pre class="snip">${snippet}</pre>`);
+  }
+
+  // --- Examples implementations ---
+
+  // 1) function expression example
+  function runFuncExpr() {
+    clearTerminal();
+    appendLine('<div class="meta">Wyrażenie funkcyjne — przykład</div>');
+    // anonimowa funkcja przypisana do zmiennej
+    const add = function(a, b) {
+      return a + b;
+    };
+    // arrow function jako przykład alternatywy
+    const mul = (a, b) => a * b;
+
+    const sum = add(7, 5);
+    const product = mul(7, 5);
+
+    appendLine(`add(7, 5) => <span class="ok">${sum}</span>`);
+    appendLine(`mul(7, 5) => <span class="ok">${product}</span>`);
+    appendLine('<div class="meta">Uwaga: wyrażenie funkcyjne można przekazywać jako argumenty i używać jako callback.</div>');
+    console.log('function expression results', {sum, product});
+  }
+
+  // 2) custom function createProfile
+  function createProfile(firstName, lastName, age) {
+    const username = `${firstName.toLowerCase()}.${lastName.toLowerCase()}`;
+    const profile = { firstName, lastName, age, username, created: new Date().toISOString() };
+    const summary = `${firstName} ${lastName} (${age}) — @${username}`;
+    return { profile, summary };
+  }
+
+  function runCreateProfile() {
+    clearTerminal();
+    appendLine('<div class="meta">Custom function — createProfile</div>');
+    const res = createProfile('Ala', 'Kowalska', 23);
+    appendLine(`Summary: <span class="ok">${res.summary}</span>`);
+    appendLine(`<div class="meta">Obiekt profilu (JSON):</div>`);
+    appendLine(`<pre class="snip">${JSON.stringify(res.profile, null, 2)}</pre>`);
+    appendLine('<div class="meta">Uwaga: createProfile zwraca obiekt i skrócony opis — przydane przy renderowaniu UI.</div>');
+    console.log('createProfile:', res);
+  }
+
+  // optional keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.altKey && e.key === '1') runFuncExpr();
+    if (e.altKey && e.key === '2') runCreateProfile();
+  });
+</script>
+</body>
+</html>
