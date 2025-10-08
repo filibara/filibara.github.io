@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   div.style.border = "1px solid limegreen";
   div.style.color = "limegreen";
   div.style.fontFamily = "monospace";
-  div.textContent = przywitaj("Filip");
+  div.textContent = przywitaj("Jarek");
 
   document.body.appendChild(div);
 });
