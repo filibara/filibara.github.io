@@ -11,8 +11,8 @@
 </head>
 <body>
   <h2>Przykład użycia confirm()</h2>
-  <p>Kliknij przycisk — zapyta Cię, czy chcesz załadować treść z odpowiedziami.</p>
-  <button id="load-btn">Załaduj treść z odpowiedziami</button>
+  <p>Kliknij przycisk — zapyta Cię, czy chcesz załadować dodatkowe treści </p>
+  <button id="load-btn">Załaduj dodatkową treść</button>
 
   <div id="answers" aria-live="polite">
     <!-- tutaj wstawimy treść po potwierdzeniu -->
@@ -20,13 +20,13 @@
 
   <script>
     document.getElementById('load-btn').addEventListener('click', function () {
-      const ok = window.confirm('Czy chcesz załadować treść strony z odpowiedziami?');
+      const ok = window.confirm('Czy chcesz załadować dodatkową treść?');
       const box = document.getElementById('answers');
 
       if (ok) {
         // przykładowa zawartość, możesz tu wstawić dowolny HTML
         box.innerHTML = `
-          <h3>Odpowiedzi i materiały</h3>
+          <h3>Dodatkowe treść</h3>
           <ul>
             <li>Odpowiedź 1: Dzień Dobry</li>
             <li>Odpowiedź 2: Polecenie confirm</li>
