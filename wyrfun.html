@@ -106,12 +106,12 @@
     <!-- left column -->
     <section class="card" aria-labelledby="controls-title">
       <h2 id="controls-title">Przykłady funkcji</h2>
-      <p class="note">Dwa przykłady: 1) wyrażenie funkcyjne (function expression), 2) własna funkcja tworząca profil użytkownika.</p>
+      <p class="note">Dwa przykłady: 1) wyrażenie funkcyjne, <br> 2) własna funkcja tworząca profil użytkownika.</p>
 
       <div class="examples">
         <!-- function expression -->
         <div>
-          <h3 style="margin:6px 0 6px;color:var(--accent)">Wyrażenie funkcyjne (function expression)</h3>
+          <h3 style="margin:6px 0 6px;color:var(--accent)">Wyrażenie funkcyjne </h3>
           <div class="small meta">Przypisanie funkcji do zmiennej. Można użyć anonimowej funkcji lub arrow function.</div>
           <pre class="snip">// przykład:
 const add = function(a, b) {
@@ -119,20 +119,20 @@ const add = function(a, b) {
 };
 add(2,3) // 5</pre>
           <div class="row">
-            <button onclick="runFuncExpr()">Uruchom function expression</button>
+            <button onclick="runFuncExpr()">Uruchom</button>
             <button class="ghost" onclick="printCode('function expression', funcExprSnippet)">Pokaż kod</button>
           </div>
         </div>
 
         <!-- custom function -->
         <div>
-          <h3 style="margin-top:10px;color:var(--accent)">Custom function — createProfile</h3>
-          <div class="small meta">Funkcja tworzy obiekt profilu i formatuje wynik jako string HTML (przydatne przy renderowaniu).</div>
+          <h3 style="margin-top:10px;color:var(--accent)">Własna funkcja</h3>
+          <div class="small meta">Funkcja tworzy obiekt profilu i formatuje wynik jako string HTML.</div>
           <pre class="snip">// przykład:
 createProfile('Ala', 'Kowalska', 23)
 // zwraca obiekt i skrócony opis</pre>
           <div class="row">
-            <button onclick="runCreateProfile()">Uruchom createProfile</button>
+            <button onclick="runCreateProfile()">Uruchom</button>
             <button class="ghost" onclick="printCode('createProfile', createProfileSnippet)">Pokaż kod</button>
           </div>
         </div>
@@ -152,7 +152,7 @@ createProfile('Ala', 'Kowalska', 23)
     </section>
   </main>
 
-  <footer>filibara · JS playground · funkcje</footer>
+  <footer>filibara · JS · wyrażenia funkcyjne </footer>
 
 <script>
   // snippets
