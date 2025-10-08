@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Instrukcje</title>
+<title>Instrukcje — z inputami</title>
 <style>
   :root {
     --bg: #07120b;
@@ -63,6 +63,16 @@
   }
   .small { font-size:0.85rem; color:var(--muted); }
 
+  input[type="number"], input[type="text"], select {
+    background: rgba(255,255,255,0.03);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.04);
+    padding: 6px 8px;
+    border-radius: 6px;
+    min-width: 90px;
+  }
+  label { font-size:0.85rem; color:var(--muted); margin-right:6px; }
+
   /* terminal */
   .terminal {
     background: linear-gradient(180deg, var(--term-bg), #02110a);
@@ -87,6 +97,8 @@
     font-size:0.9rem;
   }
 
+  .controls-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
   footer { margin-top:18px; color:var(--muted); text-align:center; font-size:0.9rem; }
   @media (max-width:980px){
     .layout { grid-template-columns: 1fr; }
@@ -97,26 +109,27 @@
   <header>
     <div>
       <h1>Instrukcje sterujące w JS</h1>
-      <p class="lead">if • switch • for • while • do...while • ternary</p>
+      <p class="lead">if • switch • for • while • do...while • ternary — teraz z polami input</p>
     </div>
-    <div style="margin-left:auto" class="small">Kliknij przycisk — wynik pojawi się w terminalu</div>
+    <div style="margin-left:auto" class="small">Wpisz wartości i kliknij "Uruchom z inputem"</div>
   </header>
 
   <main class="layout">
     <!-- left column - controls -->
     <section class="card">
-      <h2>Przykłady</h2>
-      <p class="note">Każdy przykład można uruchomić i podejrzeć snippet kodu.</p>
+      <h2>Przykłady (z inputami)</h2>
+      <p class="note">Wprowadź własne dane i uruchom przykład. Jeśli input zostanie pominięty, użyte zostaną wartości domyślne.</p>
 
       <div class="examples">
 
         <!-- IF -->
         <div>
           <h3 style="color:var(--accent)">if / else</h3>
-          <div class="small meta">Instrukcja warunkowa w trzech wariantach: zwykły, z else i bez klamerek.</div>
-          <pre class="snip">if (warunek) { ... } else { ... }</pre>
-          <div class="row">
-            <button onclick="runIf()">Uruchom if</button>
+          <div class="small meta">Wpisz wiek (liczba całkowita).</div>
+          <div class="controls-row">
+            <label for="ageInput">Wiek:</label>
+            <input id="ageInput" type="number" min="0" placeholder="18">
+            <button onclick="runIf()">Uruchom z inputem</button>
             <button class="ghost" onclick="printCode('if', `if (age >= 18) { ... } else { ... }`)">Pokaż kod</button>
           </div>
         </div>
@@ -124,57 +137,64 @@
         <!-- SWITCH -->
         <div>
           <h3 style="color:var(--accent)">switch</h3>
-          <div class="small meta">Wybiera blok kodu na podstawie wartości zmiennej.</div>
-          <pre class="snip">switch(day) { case 1: ... }</pre>
-          <div class="row">
-            <button onclick="runSwitch()">Uruchom switch</button>
-            <button class="ghost" onclick="printCode('switch', `switch (day) { case 1: ... }`)">Pokaż kod</button>
+          <div class="small meta">Wpisz numer dnia (1-7).</div>
+          <div class="controls-row">
+            <label for="dayInput">Dzień:</label>
+            <input id="dayInput" type="number" min="1" max="7" placeholder="2">
+            <button onclick="runSwitch()">Uruchom z inputem</button>
+            <button class="ghost" onclick="printCode('switch', `switch(day) { case 1: ... }`)">Pokaż kod</button>
           </div>
         </div>
 
         <!-- FOR -->
         <div>
           <h3 style="color:var(--accent)">for</h3>
-          <div class="small meta">Pętla z licznikiem.</div>
-          <pre class="snip">for (let i=0; i<5; i++) { ... }</pre>
-          <div class="row">
-            <button onclick="runFor()">Uruchom for</button>
-            <button class="ghost" onclick="printCode('for', `for (let i=0; i<5; i++) { ... }`)">Pokaż kod</button>
+          <div class="small meta">Ile iteracji pokazać? (max 100)</div>
+          <div class="controls-row">
+            <label for="forCount">Ile:</label>
+            <input id="forCount" type="number" min="1" max="100" placeholder="5">
+            <button onclick="runFor()">Uruchom z inputem</button>
+            <button class="ghost" onclick="printCode('for', `for (let i=0; i<count; i++) { ... }`)">Pokaż kod</button>
           </div>
         </div>
 
         <!-- WHILE -->
         <div>
           <h3 style="color:var(--accent)">while</h3>
-          <div class="small meta">Wykonuje blok dopóki warunek jest spełniony.</div>
-          <div class="row">
-            <button onclick="runWhile()">Uruchom while</button>
-            <button class="ghost" onclick="printCode('while', `while (i < n) { ... }`)">Pokaż kod</button>
+          <div class="small meta">Limit iteracji (max 100).</div>
+          <div class="controls-row">
+            <label for="whileLimit">Limit:</label>
+            <input id="whileLimit" type="number" min="1" max="100" placeholder="3">
+            <button onclick="runWhile()">Uruchom z inputem</button>
+            <button class="ghost" onclick="printCode('while', `while (i <= limit) { ... }`)">Pokaż kod</button>
           </div>
         </div>
 
         <!-- DO WHILE -->
         <div>
           <h3 style="color:var(--accent)">do...while</h3>
-          <div class="small meta">Wykonuje blok co najmniej raz, a potem sprawdza warunek.</div>
-          <div class="row">
-            <button onclick="runDoWhile()">Uruchom do...while</button>
-            <button class="ghost" onclick="printCode('do...while', `do { ... } while (warunek);`)">Pokaż kod</button>
+          <div class="small meta">Ile iteracji wykonać (min 1, max 100).</div>
+          <div class="controls-row">
+            <label for="doLimit">Ile:</label>
+            <input id="doLimit" type="number" min="1" max="100" placeholder="3">
+            <button onclick="runDoWhile()">Uruchom z inputem</button>
+            <button class="ghost" onclick="printCode('do...while', `do { ... } while (i <= limit);`)">Pokaż kod</button>
           </div>
         </div>
 
         <!-- TERNARY -->
         <div>
-          <h3 style="color:var(--accent)">?: (operator trójargumentowy)</h3>
-          <div class="small meta">Zapis warunku w skróconej formie.</div>
-          <pre class="snip">warunek ? wynik1 : wynik2</pre>
-          <div class="row">
-            <button onclick="runTernary()">Uruchom ternary</button>
-            <button class="ghost" onclick="printCode('ternary', `let x = cond ? a : b;`)">Pokaż kod</button>
+          <h3 style="color:var(--accent)">?: (ternary)</h3>
+          <div class="small meta">Podaj wynik (score) — próg zaliczenia to 50.</div>
+          <div class="controls-row">
+            <label for="scoreInput">Score:</label>
+            <input id="scoreInput" type="number" min="0" max="100" placeholder="75">
+            <button onclick="runTernary()">Uruchom z inputem</button>
+            <button class="ghost" onclick="printCode('ternary', `let x = score >= 50 ? 'Zaliczone' : 'Niezaliczone';`)">Pokaż kod</button>
           </div>
         </div>
 
-        <div class="small" style="margin-top:14px">
+        <div style="margin-top:14px" class="small">
           <button class="ghost" onclick="clearTerminal()">Wyczyść terminal</button>
         </div>
       </div>
@@ -184,12 +204,12 @@
     <section class="card">
       <h2>Terminal — wynik</h2>
       <div id="terminal" class="terminal">
-        <div class="log-line meta">Witaj — kliknij przyciski, aby uruchomić przykłady.</div>
+        <div class="log-line meta">Witaj — wpisz dane i kliknij "Uruchom z inputem".</div>
       </div>
     </section>
   </main>
 
-  <footer>filibara · JS · instrukcje sterujące</footer>
+  <footer>filibara · JS · instrukcje sterujące (input)</footer>
 
 <script>
   const term = document.getElementById('terminal');
@@ -197,38 +217,95 @@
   function clearTerminal(){ term.innerHTML='<div class="log-line meta">Terminal wyczyszczony.</div>'; }
   function printCode(title, snippet){ appendLine(`<div class="meta">Snippet: <strong>${title}</strong></div><pre class="snip">${snippet}</pre>`); }
 
-  // --- przykłady ---
+  // helper: parseInt safe
+  function toInt(val, fallback) {
+    const n = parseInt(val);
+    return Number.isNaN(n) ? fallback : n;
+  }
+
+  // --- przykłady z inputami ---
   function runIf(){
     clearTerminal();
-    let age=18;
-    if(age>=18) appendLine("Masz 18 lat lub więcej");
-    if(age<18) appendLine("Niepełnoletni");
+    const ageEl = document.getElementById('ageInput').value;
+    const age = toInt(ageEl, 18);
+    appendLine(`<div class="meta">Wartość used: age = ${age}</div>`);
+    if(age >= 18) appendLine("Masz 18 lat lub więcej");
+    if(age < 18) appendLine("Niepełnoletni");
     else appendLine("Pełnoletni");
-    if(age===18) appendLine("Masz dokładnie 18 lat");
+    if(age === 18) appendLine("Masz dokładnie 18 lat");
   }
+
   function runSwitch(){
     clearTerminal();
-    let day=2; let result;
-    switch(day){case 1:result="Poniedziałek";break;case 2:result="Wtorek";break;case 3:result="Środa";break;default:result="Inny dzień";}
+    const dayEl = document.getElementById('dayInput').value;
+    let day = toInt(dayEl, 2);
+    // normalize day to 1-7
+    if(day < 1 || day > 7) day = 2;
+    appendLine(`<div class="meta">Wartość used: day = ${day}</div>`);
+    let result;
+    switch(day){case 1:result="Poniedziałek";break;case 2:result="Wtorek";break;case 3:result="Środa";break;case 4:result="Czwartek";break;case 5:result="Piątek";break;case 6:result="Sobota";break;case 7:result="Niedziela";break;default:result="Inny dzień";}
     appendLine("Dzień: "+result);
   }
+
   function runFor(){
     clearTerminal();
-    for(let i=1;i<=5;i++){ appendLine("Liczba: "+i); }
+    const cEl = document.getElementById('forCount').value;
+    let count = toInt(cEl, 5);
+    if(count < 1) count = 1;
+    if(count > 100) count = 100;
+    appendLine(`<div class="meta">Wartość used: count = ${count}</div>`);
+    for(let i=1;i<=count;i++){
+      appendLine("Liczba: "+i);
+    }
   }
+
   function runWhile(){
     clearTerminal();
-    let i=1; while(i<=3){ appendLine("Iteracja "+i); i++; }
+    const limEl = document.getElementById('whileLimit').value;
+    let limit = toInt(limEl, 3);
+    if(limit < 1) limit = 1;
+    if(limit > 100) limit = 100;
+    appendLine(`<div class="meta">Wartość used: limit = ${limit}</div>`);
+    let i=1;
+    while(i<=limit){
+      appendLine("Iteracja "+i);
+      i++;
+    }
   }
+
   function runDoWhile(){
     clearTerminal();
-    let i=1; do{ appendLine("Iteracja "+i); i++; } while(i<=3);
+    const dEl = document.getElementById('doLimit').value;
+    let limit = toInt(dEl, 3);
+    if(limit < 1) limit = 1;
+    if(limit > 100) limit = 100;
+    appendLine(`<div class="meta">Wartość used: limit = ${limit}</div>`);
+    let i=1;
+    do{
+      appendLine("Iteracja "+i);
+      i++;
+    } while(i<=limit);
   }
+
   function runTernary(){
     clearTerminal();
-    let score=75;
-    appendLine(score>=50?"Zaliczone!":"Niezaliczone!");
+    const sEl = document.getElementById('scoreInput').value;
+    let score = toInt(sEl, 75);
+    if(score < 0) score = 0;
+    if(score > 100) score = 100;
+    appendLine(`<div class="meta">Wartość used: score = ${score}</div>`);
+    const msg = (score >= 50) ? "Zaliczone!" : "Niezaliczone!";
+    appendLine(msg);
   }
+
+  // keyboard: Enter on input triggers corresponding run
+  document.getElementById('ageInput').addEventListener('keydown', e => { if(e.key==='Enter') runIf(); });
+  document.getElementById('dayInput').addEventListener('keydown', e => { if(e.key==='Enter') runSwitch(); });
+  document.getElementById('forCount').addEventListener('keydown', e => { if(e.key==='Enter') runFor(); });
+  document.getElementById('whileLimit').addEventListener('keydown', e => { if(e.key==='Enter') runWhile(); });
+  document.getElementById('doLimit').addEventListener('keydown', e => { if(e.key==='Enter') runDoWhile(); });
+  document.getElementById('scoreInput').addEventListener('keydown', e => { if(e.key==='Enter') runTernary(); });
+
 </script>
 </body>
 </html>
