@@ -2,7 +2,7 @@
 
 // Prosta funkcja witająca
 function przywitaj(imie) {
-  return `Cześć, ${imie}! Miło było Cię widzieć na stronie `;
+  return `Cześć, ${imie}! Miło było Cię widzieć na tej stronie `;
 }
 
 // Funkcja, która uruchamia się po załadowaniu strony
