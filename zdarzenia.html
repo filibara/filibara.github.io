@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Zdarzenia DOM — przykłady</title>
+<style>
+  :root {
+    --bg: #07120b;
+    --panel: #082713;
+    --card: #0b2b14;
+    --accent: #1db954;
+    --muted: #8fb99a;
+    --text: #e6f8ea;
+    --term-bg: #04120a;
+    --term-border: rgba(29,185,84,0.15);
+  }
+  * { box-sizing: border-box; }
+  body{
+    margin:0;
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg,var(--bg),#05130a 60%);
+    color:var(--text);
+    padding:20px;
+  }
+  header { display:flex; align-items:center; gap:18px; margin-bottom:18px; }
+  h1 { margin:0; color:var(--accent); font-size:1.4rem; }
+  p.lead { margin:0; color:var(--muted); }
+
+  .layout {
+    display:grid;
+    grid-template-columns: 520px 1fr;
+    gap:18px;
+    align-items:start;
+  }
+
+  .card {
+    background: linear-gradient(180deg,var(--panel),var(--card));
+    border-radius:12px;
+    padding:14px;
+    border:1px solid var(--term-border);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    margin-bottom:12px;
+  }
+
+  .grid-controls { display:grid; grid-template-columns: 1fr; gap:12px; max-height:80vh; overflow:auto; padding-right:6px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:6px; }
+  button {
+    background:var(--accent);
+    color:#04220f;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+  }
+  button.ghost {
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  input[type="text"], input[type="number"], textarea, select {
+    background: rgba(255,255,255,0.03);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.04);
+    padding: 6px 8px;
+    border-radius: 6px;
+  }
+  .note { color:var(--muted); font-size:0.9rem; margin-bottom:6px; }
+
+  .terminal {
+    background: linear-gradient(180deg, var(--term-bg), #02110a);
+    border-radius:10px;
+    padding:12px;
+    font-family: ui-monospace, "Roboto Mono", monospace;
+    color: #bff3c8;
+    min-height:520px;
+    overflow:auto;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .log-line { padding:6px 8px; border-radius:6px; margin-bottom:8px; background: rgba(255,255,255,0.01); }
+  .meta { color: var(--muted); font-size:0.85rem; }
+  .hint { color:var(--muted); font-size:0.85rem; margin-left:6px; }
+  pre.snip { background: rgba(0,0,0,0.2); padding:10px; border-radius:6px; overflow:auto; font-size:0.9rem; }
+
+  .draggable { width:80px; height:40px; background:#1db95433; border:1px dashed rgba(29,185,84,0.3); display:flex; align-items:center; justify-content:center; border-radius:6px; cursor:grab; }
+  .dropzone { min-height:60px; border:2px dashed rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center; border-radius:6px; padding:8px; }
+
+  footer { margin-top:14px; color:var(--muted); text-align:center; font-size:0.9rem; }
+  @media (max-width:980px){
+    .layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Zdarzenia DOM — praktyczne przykłady</h1>
+      <p class="lead">Kliknij / wpisz / przeciągnij — zobacz w terminalu które zdarzenie zostało wywołane.</p>
+    </div>
+    <div style="margin-left:auto" class="meta">Obsługujemy 22 zdarzenia (interaktywne + symulacje)</div>
+  </header>
+
+  <main class="layout">
+    <!-- left: controls -->
+    <section class="card">
+      <h2>Interakcje (wywołaj zdarzenia)</h2>
+      <div class="note">Dla trudnych do naturalnego wywołania zdarzeń dostępny jest przycisk <em>Simulate</em> — on wyśle odpowiadające zdarzenie programowo.</div>
+
+      <div class="grid-controls">
+
+        <!-- 1 abort (simulated) -->
+        <div>
+          <strong>1. abort</strong>
+          <div class="row">
+            <button onclick="simulateEvent('abortEl','abort')">Simulate abort</button>
+            <span class="hint">Symulowane (nie zawsze łatwe do naturalnego wywołania)</span>
+          </div>
+          <div style="display:none"><!-- element for abort -->
+            <div id="abortEl"></div>
+          </div>
+        </div>
+
+        <!-- 2 blur -->
+        <div>
+          <strong>2. blur</strong>
+          <div class="row">
+            <input id="blurInput" placeholder="Kliknij, wpisz, klik gdzie indziej" />
+            <button onclick="simulateBlur()">Simulate blur</button>
+          </div>
+        </div>
+
+        <!-- 3 change -->
+        <div>
+          <strong>3. change</strong>
+          <div class="row">
+            <select id="changeSelect">
+              <option value="a">A</option><option value="b">B</option><option value="c">C</option>
+            </select>
+            <button onclick="simulateEvent('changeSelect','change')">Simulate change</button>
+          </div>
+        </div>
+
+        <!-- 4 click -->
+        <div>
+          <strong>4. click</strong>
+          <div class="row">
+            <button id="clickBtn">Click me</button>
+            <button class="ghost" onclick="simulateEvent('clickBtn','click')">Simulate</button>
+          </div>
+        </div>
+
+        <!-- 5 dblclick -->
+        <div>
+          <strong>5. dblclick</strong>
+          <div class="row">
+            <button id="dblBtn">Double-click me</button>
+            <button class="ghost" onclick="simulateEvent('dblBtn','dblclick')">Simulate</button>
+          </div>
+        </div>
+
+        <!-- 6 drag / drop -->
+        <div>
+          <strong>6. drag / drop</strong>
+          <div class="row">
+            <div id="dragEl" draggable="true" class="draggable">drag me</div>
+            <div id="dropEl" class="dropzone">drop here</div>
+          </div>
+        </div>
+
+        <!-- 7 error (image) -->
+        <div>
+          <strong>7. error</strong>
+          <div class="row">
+            <img id="badImg" src="invalid-image-xyz.png" alt="bad" width="120" onerror="handleEvent('error','badImg')">
+            <button class="ghost" onclick="simulateEvent('badImg','error')">Simulate</button>
+            <span class="hint">image onerror</span>
+          </div>
+        </div>
+
+        <!-- 8 focus -->
+        <div>
+          <strong>8. focus</strong>
+          <div class="row">
+            <input id="focusInput" placeholder="Kliknij mnie" />
+            <button class="ghost" onclick="simulateEvent('focusInput','focus')">Simulate focus</button>
+          </div>
+        </div>
+
+        <!-- 9 keydown -->
+        <div>
+          <strong>9. keydown</strong>
+          <div class="row">
+            <input id="kd" placeholder="Wciśnij klawisz" />
+            <button class="ghost" onclick="simulateKey('kd','keydown','A')">Simulate keydown 'A'</button>
+          </div>
+        </div>
+
+        <!-- 10 keypress -->
+        <div>
+          <strong>10. keypress</strong>
+          <div class="row">
+            <input id="kp" placeholder="Wciśnij klawisz (keypress)" />
+            <button class="ghost" onclick="simulateKey('kp','keypress','B')">Simulate keypress 'B'</button>
+          </div>
+        </div>
+
+        <!-- 11 keyup -->
+        <div>
+          <strong>11. keyup</strong>
+          <div class="row">
+            <input id="ku" placeholder="Wciśnij i puść klawisz" />
+            <button class="ghost" onclick="simulateKey('ku','keyup','C')">Simulate keyup 'C'</button>
+          </div>
+        </div>
+
+        <!-- 12 load -->
+        <div>
+          <strong>12. load</strong>
+          <div class="row">
+            <button onclick="appendLine('load (window) already fired on page load)')">Show load note</button>
+            <span class="hint">load zdarzenie zarejestrowane przy ładowaniu strony</span>
+          </div>
+        </div>
+
+        <!-- 13 mousedown -->
+        <div>
+          <strong>13. mousedown</strong>
+          <div class="row">
+            <button id="mdBtn">Mouse down here</button>
+            <button class="ghost" onclick="simulateEvent('mdBtn','mousedown')">Simulate</button>
+          </div>
+        </div>
+
+        <!-- 14 mouseout -->
+        <div>
+          <strong>14. mouseout</strong>
+          <div class="row">
+            <div id="moBox" class="dropzone" style="width:140px">Move mouse out of me</div>
+            <button class="ghost" onclick="simulateEvent('moBox','mouseout')">Simulate</button>
+          </div>
+        </div>
+
+        <!-- 15 mouseover -->
+        <div>
+          <strong>15. mouseover</strong>
+          <div class="row">
+            <div id="overBox" class="dropzone" style="width:140px">Hover me</div>
+            <button class="ghost" onclick="simulateEvent('overBox','mouseover')">Simulate</button>
+          </div>
+        </div>
+
+        <!-- 16 mouseup -->
+        <div>
+          <strong>16. mouseup</strong>
+          <div class="row">
+            <button id="muBtn">Mouse up here</button>
+            <button class="ghost" onclick="simulateEvent('muBtn','mouseup')">Simulate</button>
+          </div>
+        </div>
+
+        <!-- 17 move (mousemove) -->
+        <div>
+          <strong>17. move (mousemove)</strong>
+          <div class="row">
+            <div id="moveArea" class="dropzone" style="min-height:80px">Move mouse here</div>
+            <button class="ghost" onclick="simulateEvent('moveArea','mousemove')">Simulate</button>
+          </div>
+        </div>
+
+        <!-- 18 reset -->
+        <div>
+          <strong>18. reset</strong>
+          <div class="row">
+            <form id="resetForm" onreset="handleEvent('reset','resetForm')">
+              <input name="x" placeholder="jakieś pole">
+              <button type="reset">Reset form</button>
+            </form>
+            <button class="ghost" onclick="document.getElementById('resetForm').reset()">Simulate reset</button>
+          </div>
+        </div>
+
+        <!-- 19 resize -->
+        <div>
+          <strong>19. resize</strong>
+          <div class="row">
+            <button onclick="appendLine('resize: zmień rozmiar okna przeglądarki (ręcznie)')">How to trigger</button>
+            <span class="hint">Nasłuchujemy window.resize</span>
+          </div>
+        </div>
+
+        <!-- 20 select -->
+        <div>
+          <strong>20. select</strong>
+          <div class="row">
+            <textarea id="selText" rows="2" placeholder="Zaznacz fragment tekstu, by wywołać select"></textarea>
+            <button class="ghost" onclick="simulateEvent('selText','select')">Simulate</button>
+          </div>
+        </div>
+
+        <!-- 21 submit -->
+        <div>
+          <strong>21. submit</strong>
+          <div class="row">
+            <form id="submitForm" onsubmit="handleEvent('submit','submitForm'); return false;">
+              <input name="s" placeholder="wartość">
+              <button type="submit">Submit form</button>
+            </form>
+            <button class="ghost" onclick="document.getElementById('submitForm').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}))">Simulate</button>
+          </div>
+        </div>
+
+        <!-- 22 unload -->
+        <div>
+          <strong>22. unload / beforeunload</strong>
+          <div class="row">
+            <button onclick="appendLine('Unload: zostanie wywołane przy opuszczaniu strony (console)')">Note</button>
+            <span class="hint">Zdarzenie wywoływane przy zamykaniu/odświeżeniu — zapisane w konsoli</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- right: terminal -->
+    <section class="card">
+      <h2>Terminal — wynik</h2>
+      <div id="terminal" class="terminal" aria-live="polite">
+        <div class="log-line meta">Terminal: wywołaj zdarzenia po lewej aby zobaczyć log.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>filibara · zdarzenia DOM · przykłady</footer>
+
+<script>
+  // Terminal helper
+  const term = document.getElementById('terminal');
+  function appendLine(text, cls='log-line') {
+    const d = document.createElement('div');
+    d.className = cls;
+    d.innerHTML = text;
+    term.appendChild(d);
+    term.scrollTop = term.scrollHeight;
+    console.log('EVENT LOG:', text);
+  }
+
+  // Generic handler used by inline attributes
+  function handleEvent(name, id) {
+    appendLine(`<span class="meta">${name}</span> fired on <strong>${id}</strong>`);
+  }
+
+  // Simulate event helper
+  function simulateEvent(elId, evtName) {
+    const el = document.getElementById(elId);
+    if (!el) { appendLine(`Cannot simulate ${evtName}: element ${elId} not found`); return; }
+    const ev = new Event(evtName, { bubbles: true, cancelable: true });
+    el.dispatchEvent(ev);
+    appendLine(`Simulated <strong>${evtName}</strong> on <em>${elId}</em>`);
+  }
+
+  // Simulate keyboard event
+  function simulateKey(elId, type, key='A') {
+    const el = document.getElementById(elId);
+    if(!el) { appendLine('Element not found'); return; }
+    const ev = new KeyboardEvent(type, { key, bubbles:true, cancelable:true });
+    el.dispatchEvent(ev);
+    appendLine(`Simulated <strong>${type}</strong> (key="${key}") on <em>${elId}</em>`);
+  }
+
+  // --- Attach listeners to interactive elements ---
+
+  // click
+  document.getElementById('clickBtn').addEventListener('click', () => appendLine('click fired on clickBtn'));
+
+  // dblclick
+  document.getElementById('dblBtn').addEventListener('dblclick', () => appendLine('dblclick fired on dblBtn'));
+
+  // blur
+  document.getElementById('blurInput').addEventListener('blur', () => appendLine('blur fired on blurInput'));
+
+  // change
+  document.getElementById('changeSelect').addEventListener('change', (e) => appendLine('change fired on changeSelect → value=' + e.target.value));
+
+  // focus
+  document.getElementById('focusInput').addEventListener('focus', () => appendLine('focus fired on focusInput'));
+
+  // key events
+  ['kd','kp','ku'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('keydown', e => appendLine(`keydown on ${id}: key="${e.key}"`));
+    el.addEventListener('keypress', e => appendLine(`keypress on ${id}: key="${e.key}"`));
+    el.addEventListener('keyup', e => appendLine(`keyup on ${id}: key="${e.key}"`));
+  });
+
+  // mousedown / mouseup
+  document.getElementById('mdBtn').addEventListener('mousedown', () => appendLine('mousedown on mdBtn'));
+  document.getElementById('muBtn').addEventListener('mouseup', () => appendLine('mouseup on muBtn'));
+
+  // mouseover / mouseout
+  document.getElementById('overBox').addEventListener('mouseover', () => appendLine('mouseover on overBox'));
+  document.getElementById('moBox').addEventListener('mouseout', () => appendLine('mouseout on moBox'));
+
+  // mousemove (move)
+  const moveArea = document.getElementById('moveArea');
+  let mvCount = 0;
+  moveArea.addEventListener('mousemove', (e) => {
+    mvCount++;
+    if(mvCount % 10 === 0) { // ograniczamy spam
+      appendLine(`mousemove on moveArea (x:${e.offsetX}, y:${e.offsetY}) — ${mvCount} times`);
+    }
+  });
+
+  // drag & drop
+  const dragEl = document.getElementById('dragEl');
+  const dropEl = document.getElementById('dropEl');
+
+  dragEl.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('text/plain','dragged');
+    appendLine('dragstart on dragEl');
+  });
+  dragEl.addEventListener('drag', () => appendLine('drag on dragEl'));
+  dropEl.addEventListener('dragover', (e) => { e.preventDefault(); /* allow drop */ });
+  dropEl.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text/plain');
+    appendLine('drop on dropEl — data: ' + data);
+  });
+
+  // error handled via onerror attribute -> handleEvent('error','badImg') called already
+
+  // select (text selection inside textarea)
+  document.getElementById('selText').addEventListener('select', function(e) {
+    const selection = this.value.substring(this.selectionStart, this.selectionEnd);
+    appendLine('select fired on selText → "' + (selection || '[empty selection]') + '"');
+  });
+
+  // form submit
+  document.getElementById('submitForm').addEventListener('submit', function(e){
+    e.preventDefault(); // nie wysyłamy rzeczywiście
+    appendLine('submit fired on submitForm');
+  });
+
+  // form reset handled inline with onreset attribute -> handleEvent logs it
+
+  // resize
+  window.addEventListener('resize', () => appendLine('resize fired (window size changed)'));
+
+  // load
+  window.addEventListener('load', () => appendLine('load fired (window.onload)'));
+
+  // unload / beforeunload
+  window.addEventListener('beforeunload', (e) => {
+    // Nie narzucamy dialogu — tylko logujemy do konsoli
+    console.log('beforeunload fired — page is unloading soon');
+    // Jeśli chcesz pokazać dialog, odkomentuj poniżej (przestarzałe i blokowane):
+    // e.returnValue = 'Are you sure?';
+  });
+  window.addEventListener('unload', () => console.log('unload fired (page unloaded)'));
+
+  // abort: many elements fire abort (e.g. media). Tutaj używamy symulacji:
+  const abortEl = document.getElementById('abortEl');
+  abortEl.addEventListener('abort', () => appendLine('abort event fired on abortEl (simulated)'));
+
+  // helper: blur simulation
+  function simulateBlur() {
+    const el = document.getElementById('blurInput');
+    el.blur();
+    appendLine('Simulated blur via el.blur()');
+  }
+
+  // helper: simulate arbitrary event triggers a real event and logs (some events won't bubble)
+  // (simulateEvent function defined earlier in global scope via template)
+  // simulateKey defined earlier
+
+  // small UX: focus first input
+  document.getElementById('ageInput').focus();
+</script>
+</body>
+</html>
