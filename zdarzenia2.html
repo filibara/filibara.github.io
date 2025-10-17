@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Zdarzenia w JavaScript</title>
+<style>
+  :root {
+    --bg:#07120b;
+    --panel:#0b2918;
+    --accent:#1db954;
+    --muted:#8fb99a;
+    --text:#e6f8ea;
+    --card:#062014;
+  }
+  body {
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg,var(--bg),#05130a 60%);
+    color: var(--text);
+    margin:0;
+    padding:20px;
+  }
+  header { margin-bottom:20px; }
+  h1 { color: var(--accent); margin:0 0 6px; font-size:1.6rem; }
+  p.lead { color: var(--muted); margin:0 0 18px; }
+  main { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
+
+  .card {
+    background: linear-gradient(180deg,var(--panel),var(--card));
+    border-radius:12px;
+    padding:14px;
+    border:1px solid rgba(29,185,84,0.1);
+    box-shadow:0 8px 25px rgba(0,0,0,0.6);
+  }
+  .card h2 { margin:0 0 8px; color:var(--accent); font-size:1.1rem; }
+  .note { color:var(--muted); font-size:0.9rem; margin-bottom:10px; }
+
+  button {
+    background:var(--accent);
+    color:#04220f;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    font-weight:700;
+    cursor:pointer;
+    margin-bottom:8px;
+  }
+  input, textarea {
+    background:#04220f;
+    color:var(--text);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:6px;
+    padding:6px;
+    width:100%;
+  }
+  .mini-term {
+    background:rgba(0,0,0,0.25);
+    border-radius:8px;
+    padding:8px;
+    min-height:40px;
+    font-family:ui-monospace,monospace;
+    font-size:0.9rem;
+    margin-top:6px;
+    border:1px solid rgba(255,255,255,0.05);
+  }
+  footer {
+    margin-top:20px;
+    text-align:center;
+    color:var(--muted);
+    font-size:0.9rem;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Zdarzenia w JavaScript</h1>
+  <p class="lead">22 podstawowe zdarzenia DOM z krótkim opisem działania.</p>
+</header>
+
+<main>
+  <!-- 1 -->
+  <section class="card">
+    <h2>onAbort</h2>
+    <p class="note">Wywoływane, gdy przerwane zostanie ładowanie obrazu lub multimediów.</p>
+    <img src="invalid.jpg" onabort="term1.textContent='Ładowanie przerwane!'" alt="obrazek" width="100%">
+    <div id="term1" class="mini-term"></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="card">
+    <h2>onBlur</h2>
+    <p class="note">Aktywuje się, gdy element traci fokus (np. po opuszczeniu pola tekstowego).</p>
+    <input type="text" placeholder="Kliknij, potem wyjdź" onblur="term2.textContent='Pole utraciło fokus'">
+    <div id="term2" class="mini-term"></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="card">
+    <h2>onChange</h2>
+    <p class="note">Uruchamia się, gdy wartość pola input/select zostanie zmieniona.</p>
+    <input type="text" placeholder="Zmień tekst" onchange="term3.textContent='Wartość zmieniona'">
+    <div id="term3" class="mini-term"></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="card">
+    <h2>onClick</h2>
+    <p class="note">Reaguje na kliknięcie przycisku myszy.</p>
+    <button onclick="term4.textContent='Kliknięto przycisk'">Kliknij mnie</button>
+    <div id="term4" class="mini-term"></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="card">
+    <h2>onDblClick</h2>
+    <p class="note">Wykonywane po podwójnym kliknięciu elementu.</p>
+    <button ondblclick="term5.textContent='Podwójne kliknięcie!'">Kliknij dwa razy</button>
+    <div id="term5" class="mini-term"></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="card">
+    <h2>onDragDrop</h2>
+    <p class="note">Aktywuje się przy przeciągnięciu i upuszczeniu elementu.</p>
+    <div style="padding:8px;background:#0f3a20;border-radius:8px;" draggable="true"
+      ondragstart="term6.textContent='Rozpoczęto przeciąganie'"
+      ondrop="term6.textContent='Upuszczono element'"
+      ondragover="event.preventDefault()">Przeciągnij mnie tutaj</div>
+    <div id="term6" class="mini-term"></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="card">
+    <h2>onError</h2>
+    <p class="note">Występuje, gdy załadowanie zasobu (np. obrazu) się nie powiedzie.</p>
+    <img src="nieistnieje.jpg" onerror="term7.textContent='Błąd ładowania obrazu!'" width="100%">
+    <div id="term7" class="mini-term"></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="card">
+    <h2>onFocus</h2>
+    <p class="note">Uruchamia się, gdy element otrzymuje fokus.</p>
+    <input onfocus="term8.textContent='Pole aktywne!'" placeholder="Kliknij tutaj">
+    <div id="term8" class="mini-term"></div>
+  </section>
+
+  <!-- 9 -->
+  <section class="card">
+    <h2>onKeyDown</h2>
+    <p class="note">Wykonuje się po wciśnięciu klawisza.</p>
+    <input onkeydown="term9.textContent='Wciśnięto klawisz: '+event.key" placeholder="Naciśnij klawisz">
+    <div id="term9" class="mini-term"></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="card">
+    <h2>onKeyPress</h2>
+    <p class="note">Reaguje na naciśnięcie klawisza znakowego.</p>
+    <input onkeypress="term10.textContent='Napisano: '+event.key" placeholder="Pisanie...">
+    <div id="term10" class="mini-term"></div>
+  </section>
+
+  <!-- 11 -->
+  <section class="card">
+    <h2>onKeyUp</h2>
+    <p class="note">Występuje po puszczeniu wciśniętego klawisza.</p>
+    <input onkeyup="term11.textContent='Puszczono klawisz: '+event.key" placeholder="Wciśnij i puść">
+    <div id="term11" class="mini-term"></div>
+  </section>
+
+  <!-- 12 -->
+  <section class="card">
+    <h2>onLoad</h2>
+    <p class="note">Wykonuje się po pełnym załadowaniu strony lub obrazu.</p>
+    <div id="term12" class="mini-term">Czeka na załadowanie...</div>
+  </section>
+
+  <!-- 13 -->
+  <section class="card">
+    <h2>onMouseDown</h2>
+    <p class="note">Uruchamia się przy wciśnięciu przycisku myszy nad elementem.</p>
+    <div style="padding:10px;background:#083c22;border-radius:8px;"
+      onmousedown="term13.textContent='Mysz wciśnięta'">Kliknij i przytrzymaj</div>
+    <div id="term13" class="mini-term"></div>
+  </section>
+
+  <!-- 14 -->
+  <section class="card">
+    <h2>onMouseOut</h2>
+    <p class="note">Aktywuje się, gdy kursor opuszcza obszar elementu.</p>
+    <div style="padding:10px;background:#0a3c24;border-radius:8px;"
+      onmouseout="term14.textContent='Kursor opuścił obszar'">Najedź i wyjdź</div>
+    <div id="term14" class="mini-term"></div>
+  </section>
+
+  <!-- 15 -->
+  <section class="card">
+    <h2>onMouseOver</h2>
+    <p class="note">Występuje po najechaniu kursorem na element.</p>
+    <div style="padding:10px;background:#0a3c24;border-radius:8px;"
+      onmouseover="term15.textContent='Najechano kursorem'">Najedź tutaj</div>
+    <div id="term15" class="mini-term"></div>
+  </section>
+
+  <!-- 16 -->
+  <section class="card">
+    <h2>onMouseUp</h2>
+    <p class="note">Aktywuje się po puszczeniu przycisku myszy.</p>
+    <div style="padding:10px;background:#0f3c24;border-radius:8px;"
+      onmouseup="term16.textContent='Przycisk myszy puszczony'">Kliknij i puść</div>
+    <div id="term16" class="mini-term"></div>
+  </section>
+
+  <!-- 17 -->
+  <section class="card">
+    <h2>onMove</h2>
+    <p class="note">Wywoływane przy zmianie położenia okna (nie we wszystkich przeglądarkach działa).</p>
+    <div id="term17" class="mini-term">Porusz oknem, by zobaczyć efekt (jeśli obsługiwane).</div>
+  </section>
+
+  <!-- 18 -->
+  <section class="card">
+    <h2>onReset</h2>
+    <p class="note">Występuje, gdy formularz zostanie zresetowany.</p>
+    <form onreset="term18.textContent='Formularz zresetowany'">
+      <input placeholder="Wpisz coś"><br>
+      <button type="reset">Resetuj</button>
+    </form>
+    <div id="term18" class="mini-term"></div>
+  </section>
+
+  <!-- 19 -->
+  <section class="card">
+    <h2>onResize</h2>
+    <p class="note">Reaguje na zmianę rozmiaru okna przeglądarki.</p>
+    <div id="term19" class="mini-term">Zmień rozmiar okna</div>
+  </section>
+
+  <!-- 20 -->
+  <section class="card">
+    <h2>onSelect</h2>
+    <p class="note">Uruchamia się, gdy użytkownik zaznaczy tekst w polu input.</p>
+    <input value="Zaznacz tekst" onselect="term20.textContent='Zaznaczono tekst!'">
+    <div id="term20" class="mini-term"></div>
+  </section>
+
+  <!-- 21 -->
+  <section class="card">
+    <h2>onSubmit</h2>
+    <p class="note">Aktywuje się przy wysłaniu formularza.</p>
+    <form onsubmit="event.preventDefault();term21.textContent='Formularz wysłany!'">
+      <input placeholder="Dane..."><br>
+      <button type="submit">Wyślij</button>
+    </form>
+    <div id="term21" class="mini-term"></div>
+  </section>
+
+  <!-- 22 -->
+  <section class="card">
+    <h2>onUnload</h2>
+    <p class="note">Wywoływane przy opuszczaniu strony (nie zawsze obsługiwane przez przeglądarki).</p>
+    <div id="term22" class="mini-term">Opuść stronę, by zobaczyć działanie (jeśli obsługiwane).</div>
+  </section>
+</main>
+
+<footer>filibara · JS · zdarzenia DOM</footer>
+
+<script>
+window.onload = ()=>term12.textContent='Strona w pełni załadowana';
+window.onresize = ()=>term19.textContent='Zmieniono rozmiar okna: '+window.innerWidth+'x'+window.innerHeight;
+window.onunload = ()=>console.log('Strona opuszczona (onUnload)');
+</script>
+</body>
+</html>
