@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM – dynamiczne elementy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .box {
+      width: 50px;
+      height: 50px;
+      background-color: steelblue;
+      margin: 5px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>DOM – dynamiczne tworzenie elementów</h1>
+
+  <button id="add">Dodaj element</button>
+  <button id="remove">Usuń element</button>
+
+  <br><br>
+
+  <label>
+    Rozmiar elementów:
+    <input type="range" id="slider" min="20" max="150" value="50">
+  </label>
+
+  <p>Aktualny rozmiar: <span id="sizeValue">50</span> px</p>
+
+  <div id="container"></div>
+
+  <script>
+    // Pobieranie elementów DOM
+    const addBtn = document.getElementById("add");
+    const removeBtn = document.getElementById("remove");
+    const slider = document.getElementById("slider");
+    const container = document.getElementById("container");
+    const sizeValue = document.getElementById("sizeValue");
+
+    // Funkcja tworząca nowy element
+    function createBox() {
+      const box = document.createElement("div");
+      box.classList.add("box");
+      box.style.width = slider.value + "px";
+      box.style.height = slider.value + "px";
+
+      // Zdarzenie kliknięcia na element
+      box.addEventListener("click", () => {
+        box.style.backgroundColor = "tomato";
+      });
+
+      container.appendChild(box);
+    }
+
+    // Funkcja usuwająca ostatni element
+    function removeBox() {
+      if (container.lastChild) {
+        container.removeChild(container.lastChild);
+      }
+    }
+
+    // Zdarzenia
+    addBtn.addEventListener("click", createBox);
+    removeBtn.addEventListener("click", removeBox);
+
+    slider.addEventListener("input", () => {
+      sizeValue.textContent = slider.value;
+
+      // Zmiana rozmiaru wszystkich elementów
+      const boxes = document.querySelectorAll(".box");
+      boxes.forEach(box => {
+        box.style.width = slider.value + "px";
+        box.style.height = slider.value + "px";
+      });
+    });
+  </script>
+
+</body>
+</html>
