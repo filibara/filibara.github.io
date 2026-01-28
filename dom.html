@@ -4,24 +4,98 @@
   <meta charset="UTF-8">
   <title>DOM – dynamiczne elementy</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f4f6f8;
+    color: #333;
+  }
 
-    #container {
-      margin-top: 20px;
-    }
+  h2 {
+    margin-bottom: 15px;
+  }
 
-    .box {
-      margin: 5px;
-      display: inline-block;
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-    }
-  </style>
+  button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 8px;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  button#add {
+    background: #2ecc71;
+    color: white;
+  }
+
+  button#remove {
+    background: #e74c3c;
+    color: white;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  button:active {
+    transform: scale(0.97);
+  }
+
+  label {
+    display: block;
+    margin: 10px 0;
+  }
+
+  input[type="text"] {
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 200px;
+  }
+
+  input[type="range"] {
+    vertical-align: middle;
+  }
+
+  #sizeValue {
+    font-weight: bold;
+    margin-left: 6px;
+  }
+
+  #container {
+    margin-top: 25px;
+    padding: 15px;
+    min-height: 80px;
+    border: 2px dashed #bbb;
+    border-radius: 8px;
+    background: white;
+  }
+
+  .box {
+    margin: 6px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 
+      transform 0.2s,
+      box-shadow 0.2s,
+      background-color 0.2s;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  }
+
+  .box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+  }
+</style>
+
 </head>
 <body>
 
