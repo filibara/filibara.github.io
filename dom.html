@@ -3,84 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <title>DOM – dynamiczne elementy</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
 
+    #container {
+      margin-top: 20px;
+    }
+
     .box {
-      width: 50px;
-      height: 50px;
-      background-color: steelblue;
       margin: 5px;
       display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
     }
   </style>
 </head>
 <body>
 
-  <h1>DOM – dynamiczne tworzenie elementów</h1>
+<h2>DOM – dynamiczne elementy</h2>
 
-  <button id="add">Dodaj element</button>
-  <button id="remove">Usuń element</button>
+<button id="add">Dodaj element</button>
+<button id="remove">Usuń ostatni</button>
 
-  <br><br>
+<br><br>
 
-  <label>
-    Rozmiar elementów:
-    <input type="range" id="slider" min="20" max="150" value="50">
-  </label>
+<label>
+  Tekst w elemencie:
+  <input type="text" id="textInput" placeholder="Wpisz tekst">
+</label>
 
-  <p>Aktualny rozmiar: <span id="sizeValue">50</span> px</p>
+<br><br>
 
-  <div id="container"></div>
+<label>
+  Rozmiar nowego elementu:
+  <input type="range" id="sizeSlider" min="30" max="150" value="60">
+</label>
+<span id="sizeValue">60</span> px
 
-  <script>
-    // Pobieranie elementów DOM
-    const addBtn = document.getElementById("add");
-    const removeBtn = document.getElementById("remove");
-    const slider = document.getElementById("slider");
-    const container = document.getElementById("container");
-    const sizeValue = document.getElementById("sizeValue");
+<br><br>
 
-    // Funkcja tworząca nowy element
-    function createBox() {
-      const box = document.createElement("div");
-      box.classList.add("box");
-      box.style.width = slider.value + "px";
-      box.style.height = slider.value + "px";
+<label>
+  Kolor HEX:
+  <input type="text" id="hexInput" value="#3498db" placeholder="#ff0000">
+</label>
 
-      // Zdarzenie kliknięcia na element
-      box.addEventListener("click", () => {
-        box.style.backgroundColor = "tomato";
-      });
+<br><br>
 
-      container.appendChild(box);
+<label>
+  <input type="radio" name="colorMode" value="hex" checked>
+  HEX
+</label><br>
+<label>
+  <input type="radio" name="colorMode" value="white">
+  Biały
+</label><br>
+<label>
+  <input type="radio" name="colorMode" value="black">
+  Czarny
+</label>
+
+<div id="container"></div>
+
+<script>
+  const addBtn = document.getElementById("add");
+  const removeBtn = document.getElementById("remove");
+  const container = document.getElementById("container");
+  const textInput = document.getElementById("textInput");
+
+  const sizeSlider = document.getElementById("sizeSlider");
+  const sizeValue = document.getElementById("sizeValue");
+
+  const hexInput = document.getElementById("hexInput");
+  const colorModes = document.getElementsByName("colorMode");
+
+  sizeSlider.addEventListener("input", () => {
+    sizeValue.textContent = sizeSlider.value;
+  });
+
+  // sprawdzanie poprawności HEX
+  function isValidHex(hex) {
+    return /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex);
+  }
+
+  addBtn.addEventListener("click", () => {
+    const box = document.createElement("div");
+    box.className = "box";
+
+    const size = sizeSlider.value;
+    box.style.width = size + "px";
+    box.style.height = size + "px";
+    box.style.lineHeight = size + "px";
+
+    box.textContent = textInput.value || "BOX";
+
+    let selectedMode = "hex";
+    for (const mode of colorModes) {
+      if (mode.checked) selectedMode = mode.value;
     }
 
-    // Funkcja usuwająca ostatni element
-    function removeBox() {
-      if (container.lastChild) {
-        container.removeChild(container.lastChild);
+    if (selectedMode === "white") {
+      box.style.backgroundColor = "white";
+      box.style.color = "black";
+    }
+    else if (selectedMode === "black") {
+      box.style.backgroundColor = "black";
+      box.style.color = "white";
+    }
+    else {
+      const hex = hexInput.value;
+      if (isValidHex(hex)) {
+        box.style.backgroundColor = hex;
+        box.style.color = "white";
+      } else {
+        box.style.backgroundColor = "#777";
+        box.style.color = "white";
       }
     }
 
-    // Zdarzenia
-    addBtn.addEventListener("click", createBox);
-    removeBtn.addEventListener("click", removeBox);
-
-    slider.addEventListener("input", () => {
-      sizeValue.textContent = slider.value;
-
-      // Zmiana rozmiaru wszystkich elementów
-      const boxes = document.querySelectorAll(".box");
-      boxes.forEach(box => {
-        box.style.width = slider.value + "px";
-        box.style.height = slider.value + "px";
-      });
+    box.addEventListener("click", () => {
+      box.style.backgroundColor = "tomato";
+      box.style.color = "white";
     });
-  </script>
+
+    container.appendChild(box);
+  });
+
+  removeBtn.addEventListener("click", () => {
+    if (container.children.length > 0) {
+      container.removeChild(container.lastElementChild);
+    }
+  });
+</script>
 
 </body>
 </html>
+
+
